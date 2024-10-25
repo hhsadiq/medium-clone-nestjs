@@ -1,7 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { diff, unique } from 'radash';
 import slugify from 'slugify';
+import { Repository } from 'typeorm';
 
+import { UserFavouriteArticleEntity } from '@src/articles/infrastructure/persistence/relational/entities/user-favourite-article.entity';
+import { ArticleMapper } from '@src/articles/infrastructure/persistence/relational/mappers/article.mapper';
 import { JwtPayloadType } from '@src/auth/strategies/types/jwt-payload.type';
 import { CommentsService } from '@src/comments/comments.service';
 import { Comment } from '@src/comments/domain/comment';
@@ -27,6 +35,8 @@ export class ArticlesService {
     private readonly tagsService: TagsService,
     private readonly dbHelperRepository: DatabaseHelperRepository,
     private userService: UsersService,
+    @InjectRepository(UserFavouriteArticleEntity)
+    private readonly userFavouriteArticleRepository: Repository<UserFavouriteArticleEntity>,
   ) {}
 
   async create(
@@ -214,5 +224,53 @@ export class ArticlesService {
       throw NOT_FOUND('Article', { [field]: value });
     }
     return article;
+  }
+
+  async makeFavourite(slug: Article['slug'], userId: number) {
+    const checkArticle = await this.articleRepository.findBySlug(slug);
+    if (!checkArticle) {
+      throw new NotFoundException(`Article with slug "${slug}" not found.`);
+    }
+
+    const alreadyFavourtie = await this.userFavouriteArticleRepository.findOne({
+      where: {
+        user_id: userId,
+        article_id: checkArticle.id,
+      },
+    });
+
+    if (alreadyFavourtie)
+      throw new BadRequestException(`${slug}, article is already favourite.`);
+
+    const favouriteArticle = this.userFavouriteArticleRepository.create({
+      user_id: userId,
+      article_id: checkArticle.id,
+    });
+    await this.userFavouriteArticleRepository.save(favouriteArticle);
+
+    return ArticleMapper.toDomainFavourite(checkArticle, true);
+  }
+
+  async removeFavourite(slug: Article['slug'], userId: number) {
+    const checkArticle = await this.articleRepository.findBySlug(slug);
+    if (!checkArticle) {
+      throw new NotFoundException(`Article with slug "${slug}" not found.`);
+    }
+
+    const alreadyFavourtie = await this.userFavouriteArticleRepository.findOne({
+      where: {
+        user_id: userId,
+        article_id: checkArticle.id,
+      },
+    });
+
+    if (!alreadyFavourtie)
+      throw new BadRequestException(
+        `${slug}, article is already not  favourite.`,
+      );
+
+    await this.userFavouriteArticleRepository.delete(alreadyFavourtie.id);
+
+    return ArticleMapper.toDomainFavourite(checkArticle, false);
   }
 }

@@ -205,4 +205,37 @@ export class ArticlesController {
     const { id, slug } = params;
     return this.articlesService.removeComment(id, slug, request.user);
   }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Post(':slug/favorite')
+  @ApiParam({
+    name: 'slug',
+    type: String,
+    required: true,
+  })
+  @ApiCreatedResponse({
+    type: Article,
+  })
+  async makeFavourite(
+    @Param() params: CreateCommentPathParamDto,
+    @Request() request,
+  ) {
+    const { slug } = params;
+    return await this.articlesService.makeFavourite(slug, request.user.id);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Delete(':slug/favorite')
+  @ApiCreatedResponse({
+    type: Article,
+  })
+  async removeFavourite(
+    @Param() params: CreateCommentPathParamDto,
+    @Request() request,
+  ) {
+    const { slug } = params;
+    return await this.articlesService.removeFavourite(slug, request.user.id);
+  }
 }

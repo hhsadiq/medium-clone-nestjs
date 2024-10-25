@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 
 import { FileType } from '@src/files/domain/file';
+import { FollowEntity } from '@src/follow/infrastructure/persistence/relational/entities/follow.entity';
 import { Role } from '@src/roles/domain/role';
 import { Status } from '@src/statuses/domain/status';
 
@@ -66,6 +67,12 @@ export class User {
     type: () => Status,
   })
   status?: Status;
+
+  @ApiProperty()
+  followers: FollowEntity[];
+
+  @ApiProperty()
+  following: FollowEntity[];
 
   @ApiProperty()
   createdAt: Date;

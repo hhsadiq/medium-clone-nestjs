@@ -11,15 +11,17 @@ import {
   UpdateDateColumn,
   JoinColumn,
   OneToOne,
+  OneToMany,
 } from 'typeorm';
 
+import { UserFavouriteArticleEntity } from '@src/articles/infrastructure/persistence/relational/entities/user-favourite-article.entity';
 import { AuthProvidersEnum } from '@src/auth/auth-providers.enum';
 import { TABLES } from '@src/common/constants';
 import { FileEntity } from '@src/files/infrastructure/persistence/relational/entities/file.entity';
+import { FollowEntity } from '@src/follow/infrastructure/persistence/relational/entities/follow.entity';
 import { RoleEntity } from '@src/roles/infrastructure/persistence/relational/entities/role.entity';
 import { StatusEntity } from '@src/statuses/infrastructure/persistence/relational/entities/status.entity';
 import { EntityRelationalHelper } from '@src/utils/relational-entity-helper';
-
 // We use class-transformer in ORM entity and domain entity.
 // We duplicate these rules because you can choose not to use adapters
 // in your project and return an ORM entity directly in response.
@@ -83,6 +85,18 @@ export class UserEntity extends EntityRelationalHelper {
   })
   @JoinColumn({ name: 'status_id' })
   status?: StatusEntity;
+
+  @OneToMany(() => FollowEntity, (userFollower) => userFollower.follower)
+  following: FollowEntity[];
+
+  @OneToMany(() => FollowEntity, (userFollower) => userFollower.following)
+  followers: FollowEntity[];
+
+  @OneToMany(
+    () => UserFavouriteArticleEntity,
+    (favouriteArticle) => favouriteArticle.user,
+  )
+  favouriteArticles: UserFavouriteArticleEntity[];
 
   @CreateDateColumn()
   created_at: Date;

@@ -21,6 +21,8 @@ export class UserMapper {
     }
     domainEntity.role = raw.role;
     domainEntity.status = raw.status;
+    domainEntity.followers = raw.followers;
+    domainEntity.following = raw.following;
     domainEntity.createdAt = raw.created_at;
     domainEntity.updatedAt = raw.updated_at;
     domainEntity.deletedAt = raw.deleted_at;

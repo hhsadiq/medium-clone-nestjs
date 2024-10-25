@@ -11,6 +11,7 @@ import {
   JoinTable,
 } from 'typeorm';
 
+import { UserFavouriteArticleEntity } from '@src/articles/infrastructure/persistence/relational/entities/user-favourite-article.entity';
 import { CommentEntity } from '@src/comments/infrastructure/persistence/relational/entities/comment.entity';
 import { TABLES } from '@src/common/constants';
 import { TagEntity } from '@src/tags/infrastructure/persistence/relational/entities/tag.entity';
@@ -46,6 +47,12 @@ export class ArticleEntity extends EntityRelationalHelper {
 
   @OneToMany(() => CommentEntity, (comment) => comment.article)
   comments: CommentEntity[];
+
+  @OneToMany(
+    () => UserFavouriteArticleEntity,
+    (favouriteArticle) => favouriteArticle.article,
+  )
+  favourites: UserFavouriteArticleEntity[];
 
   @ManyToMany(() => TagEntity)
   @JoinTable({

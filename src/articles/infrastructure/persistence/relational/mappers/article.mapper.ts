@@ -70,4 +70,8 @@ export class ArticleMapper {
 
     return persistenceEntity;
   }
+
+  static toDomainFavourite(article: Article, isFavourite: boolean): any {
+    return { ...article, favorited: isFavourite };
+  }
 }
