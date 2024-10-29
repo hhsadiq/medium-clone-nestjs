@@ -1,0 +1,2 @@
+git commit -m "feat: Implement required APIs."
+npx commitlint --edit
