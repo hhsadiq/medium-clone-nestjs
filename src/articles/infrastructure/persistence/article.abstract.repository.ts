@@ -38,4 +38,12 @@ export abstract class ArticleAbstractRepository {
   ): Promise<Article>;
 
   abstract remove(id: Article['id']): Promise<void>;
+
+  abstract findAllWithArticleIdsPagination({
+    paginationOptions,
+    articleIds,
+  }: {
+    paginationOptions: IPaginationOptions;
+    articleIds: string[];
+  }): Promise<Article[]>;
 }

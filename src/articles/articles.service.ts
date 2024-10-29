@@ -2,11 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { diff, unique } from 'radash';
 import slugify from 'slugify';
 
+import { UserFavouriteArticleAbstractRepository } from '@src/articles/infrastructure/persistence/user-favourite-article.abstract.repository';
 import { JwtPayloadType } from '@src/auth/strategies/types/jwt-payload.type';
 import { CommentsService } from '@src/comments/comments.service';
 import { Comment } from '@src/comments/domain/comment';
-import { NOT_FOUND, UNPROCESSABLE_ENTITY } from '@src/common/exceptions';
+import {
+  NOT_FOUND,
+  UNPROCESSABLE_ENTITY,
+  BAD_REQUEST,
+} from '@src/common/exceptions';
 import { DatabaseHelperRepository } from '@src/database-helpers/database-helper';
+import { FollowService } from '@src/follow/follow.service';
 import { Tag } from '@src/tags/domain/tag';
 import { TagsService } from '@src/tags/tags.service';
 import { UsersService } from '@src/users/users.service';
@@ -27,6 +33,8 @@ export class ArticlesService {
     private readonly tagsService: TagsService,
     private readonly dbHelperRepository: DatabaseHelperRepository,
     private userService: UsersService,
+    private readonly userFavouriteArticleRepository: UserFavouriteArticleAbstractRepository,
+    private readonly followService: FollowService,
   ) {}
 
   async create(
@@ -198,6 +206,90 @@ export class ArticlesService {
     }
 
     return await this.commentsService.remove(id, userJwtPayload);
+  }
+
+  async makeFavourite(slug: Article['slug'], userJwtPayload: JwtPayloadType) {
+    const article = await this.articleRepository.findBySlug(slug);
+    if (!article) throw NOT_FOUND('Article', { slug });
+
+    const alreadyFavourtie =
+      await this.userFavouriteArticleRepository.findByUserIdArticleId(
+        userJwtPayload.id,
+        article.id,
+      );
+
+    if (alreadyFavourtie)
+      throw BAD_REQUEST(`${slug}, article is already favourite.`);
+
+    const clonedPayload = {
+      articleId: article.id,
+      userId: userJwtPayload.id,
+    };
+
+    await this.userFavouriteArticleRepository.create(clonedPayload);
+
+    const count =
+      await this.userFavouriteArticleRepository.countFavouritesByArticleId(
+        article.id,
+      );
+
+    article.favorited = true;
+    article.favoritesCount = count;
+
+    return article;
+  }
+
+  async removeFavourite(slug: Article['slug'], userJwtPayload: JwtPayloadType) {
+    const article = await this.articleRepository.findBySlug(slug);
+    if (!article) throw NOT_FOUND('Article', { slug });
+
+    const alreadyFavourtie =
+      await this.userFavouriteArticleRepository.findByUserIdArticleId(
+        userJwtPayload.id,
+        article.id,
+      );
+
+    if (!alreadyFavourtie)
+      throw BAD_REQUEST(`${slug}, article is not favourite.`);
+
+    await this.userFavouriteArticleRepository.remove(alreadyFavourtie.id);
+
+    const count =
+      await this.userFavouriteArticleRepository.countFavouritesByArticleId(
+        article.id,
+      );
+
+    article.favorited = false;
+    article.favoritesCount = count;
+
+    return article;
+  }
+
+  async feedArticlesWithPagination(
+    {
+      paginationOptions,
+    }: {
+      paginationOptions: IPaginationOptions;
+    },
+    userJwtPayload: JwtPayloadType,
+  ) {
+    const followings = await this.followService.getFollowings(userJwtPayload);
+    const followingIds = followings?.map((following) => following.following_id);
+
+    if (!followingIds) throw BAD_REQUEST(`User Following Error`);
+
+    const userArticles =
+      await this.userFavouriteArticleRepository.findByUserIds(followingIds);
+
+    const articleIds = userArticles?.map((userArtice) => userArtice.articleId);
+
+    return this.articleRepository.findAllWithArticleIdsPagination({
+      paginationOptions: {
+        page: paginationOptions.page,
+        limit: paginationOptions.limit,
+      },
+      articleIds,
+    });
   }
 
   async findAndValidate(field, value, fetchRelations = false) {

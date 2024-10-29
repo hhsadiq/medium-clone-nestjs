@@ -205,4 +205,67 @@ export class ArticlesController {
     const { id, slug } = params;
     return this.articlesService.removeComment(id, slug, request.user);
   }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Post(':slug/favorite')
+  @ApiParam({
+    name: 'slug',
+    type: String,
+    required: true,
+  })
+  @ApiCreatedResponse({
+    type: Article,
+  })
+  async makeFavourite(
+    @Param() params: CreateCommentPathParamDto,
+    @Request() request,
+  ) {
+    const { slug } = params;
+    return await this.articlesService.makeFavourite(slug, request.user);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Delete(':slug/favorite')
+  @ApiCreatedResponse({
+    type: Article,
+  })
+  async removeFavourite(
+    @Param() params: CreateCommentPathParamDto,
+    @Request() request,
+  ) {
+    const { slug } = params;
+    return await this.articlesService.removeFavourite(slug, request.user);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Get('feed')
+  @ApiOkResponse({
+    type: InfinityPaginationResponse(Article),
+  })
+  async feedAtricles(
+    @Query() query: FindAllArticlesDto,
+    @Request() request,
+  ): Promise<InfinityPaginationResponseDto<Article>> {
+    const page = query?.page ?? 1;
+    let limit = query?.limit ?? 10;
+    if (limit > 50) {
+      limit = 50;
+    }
+
+    return infinityPagination(
+      await this.articlesService.feedArticlesWithPagination(
+        {
+          paginationOptions: {
+            page,
+            limit,
+          },
+        },
+        request.user,
+      ),
+      { page, limit },
+    );
+  }
 }

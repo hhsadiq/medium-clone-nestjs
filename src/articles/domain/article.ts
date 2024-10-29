@@ -39,6 +39,12 @@ export class Article {
   })
   tagList?: NullableType<Tag['name'][]>;
 
+  @ApiProperty()
+  favorited: boolean;
+
+  @ApiProperty()
+  favoritesCount: number;
+
   // @custom-inject-point
   @ApiProperty()
   createdAt: Date;

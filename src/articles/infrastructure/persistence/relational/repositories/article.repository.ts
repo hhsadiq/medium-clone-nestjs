@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 import { ArticleDTOWithTagDomains } from '@src/articles/articles.types';
 import { Article } from '@src/articles/domain/article';
@@ -96,6 +96,9 @@ export class ArticleRelationalRepository implements ArticleAbstractRepository {
   async findBySlug(slug: Article['slug']): Promise<NullableType<Article>> {
     const entity = await this.articleRepository.findOne({
       where: { slug },
+      relations: {
+        author: true,
+      },
     });
 
     return entity ? ArticleMapper.toDomain(entity) : null;
@@ -116,5 +119,28 @@ export class ArticleRelationalRepository implements ArticleAbstractRepository {
 
   async remove(id: Article['id']): Promise<void> {
     await this.articleRepository.delete(id);
+  }
+
+  async findAllWithArticleIdsPagination({
+    paginationOptions,
+    articleIds,
+  }: {
+    paginationOptions: IPaginationOptions;
+    articleIds: string[];
+  }): Promise<Article[]> {
+    const entities = await this.articleRepository.find({
+      where: { id: In(articleIds) },
+      skip: (paginationOptions.page - 1) * paginationOptions.limit,
+      take: paginationOptions.limit,
+      relations: {
+        author: true,
+        tagList: true,
+      },
+      order: {
+        created_at: 'DESC',
+      },
+    });
+
+    return entities.map((entity) => ArticleMapper.toDomain(entity));
   }
 }
