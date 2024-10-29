@@ -9,6 +9,7 @@ import {
   UseGuards,
   Request,
   Query,
+  Version,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
@@ -60,7 +61,8 @@ export class ArticlesController {
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
-  @Get('standard')
+  @Version('2')
+  @Get()
   @ApiOkResponse({
     type: PaginationResponse(Article),
   })
@@ -82,6 +84,7 @@ export class ArticlesController {
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
+  @Version('1')
   @Get()
   @ApiOkResponse({
     type: InfinityPaginationResponse(Article),
