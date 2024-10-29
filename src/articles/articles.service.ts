@@ -283,13 +283,30 @@ export class ArticlesService {
 
     const articleIds = userArticles?.map((userArtice) => userArtice.articleId);
 
-    return this.articleRepository.findAllWithArticleIdsPagination({
-      paginationOptions: {
-        page: paginationOptions.page,
-        limit: paginationOptions.limit,
-      },
-      articleIds,
-    });
+    const articles =
+      await this.articleRepository.findAllWithArticleIdsPagination({
+        paginationOptions: {
+          page: paginationOptions.page,
+          limit: paginationOptions.limit,
+        },
+        articleIds,
+      });
+
+    for (let index = 0; index < articles.length; index++) {
+      const isArticleFavourite =
+        await this.userFavouriteArticleRepository.findByUserIdArticleId(
+          userJwtPayload.id,
+          articles[index].id,
+        );
+      const count =
+        await this.userFavouriteArticleRepository.countFavouritesByArticleId(
+          articles[index].id,
+        );
+      articles[index].favorited = isArticleFavourite ? true : false;
+      articles[index].favoritesCount = count;
+    }
+
+    return articles;
   }
 
   async findAndValidate(field, value, fetchRelations = false) {
