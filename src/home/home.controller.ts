@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Version } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { HomeService } from './home.service';
@@ -11,5 +11,17 @@ export class HomeController {
   @Get()
   appInfo() {
     return this.service.appInfo();
+  }
+
+  @Get('version')
+  @Version('1')
+  apiVersion() {
+    return 'This is first version api ';
+  }
+
+  @Get('version')
+  @Version('2')
+  apiVersionSecond() {
+    return 'This is second version api ';
   }
 }
