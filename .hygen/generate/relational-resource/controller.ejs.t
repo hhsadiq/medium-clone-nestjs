@@ -1,5 +1,5 @@
 ---
-to: src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>.controller.ts
+to: src/<%= version %>/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>.controller.ts
 ---
 import {
   Controller,
@@ -54,8 +54,8 @@ import { AuthGuard } from '@nestjs/passport';
 import {
   InfinityPaginationResponse,
   InfinityPaginationResponseDto,
-} from '../utils/dto/infinity-pagination-response.dto';
-import { infinityPagination } from '../utils/infinity-pagination';
+} from '@src/utils/dto/infinity-pagination-response.dto';
+import { infinityPagination } from '@src/utils/infinity-pagination';
 import { FindAll<%= h.inflection.transform(name, ['pluralize']) %>Dto } from './dto/find-all-<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>.dto';
 <% } %>
 
@@ -64,7 +64,7 @@ import { FindAll<%= h.inflection.transform(name, ['pluralize']) %>Dto } from './
 @UseGuards(AuthGuard('jwt'))
 @Controller({
   path: '<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>',
-  version: '1',
+  version: '<%= version.replace("v", "") %>',
 })
 export class <%= h.inflection.transform(name, ['pluralize']) %>Controller {
   constructor(private readonly <%= h.inflection.camelize(h.inflection.pluralize(name), true) %>Service: <%= h.inflection.transform(name, ['pluralize']) %>Service) {}

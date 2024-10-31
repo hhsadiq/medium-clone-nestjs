@@ -1,5 +1,5 @@
 ---
-to: "<%= functionalities.includes('create') ? `src/${h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize'])}/dto/create-${h.inflection.transform(name, ['underscore', 'dasherize'])}.dto.ts` : null %>"
+to: "<%= functionalities.includes('create') ? `src/${version}/${h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize'])}/dto/create-${h.inflection.transform(name, ['underscore', 'dasherize'])}.dto.ts` : null %>"
 ---
 export class Create<%= name %>Dto {
 

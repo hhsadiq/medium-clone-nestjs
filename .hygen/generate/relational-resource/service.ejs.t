@@ -1,5 +1,5 @@
 ---
-to: src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>.service.ts
+to: src/<%= version %>/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>.service.ts
 ---
 import { Injectable } from '@nestjs/common';
 <% if (functionalities.includes('create')) { %>
@@ -9,7 +9,7 @@ import { Create<%= name %>Dto } from './dto/create-<%= h.inflection.transform(na
 import { Update<%= name %>Dto } from './dto/update-<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.dto';
 <% } %>
 <% if (functionalities.includes('findAll')) { %>
-import { IPaginationOptions } from '../utils/types/pagination-options';
+import { IPaginationOptions } from '@src/utils/types/pagination-options';
 <% } %>
 import { <%= name %>AbstractRepository } from './infrastructure/persistence/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.abstract.repository';
 <% if (functionalities.includes('findOne') || functionalities.includes('update') || functionalities.includes('delete')) { %>

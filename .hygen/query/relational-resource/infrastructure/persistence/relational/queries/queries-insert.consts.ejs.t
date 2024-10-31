@@ -1,6 +1,6 @@
 ---
 inject: true
-to: src/<%= h.inflection.transform(entity, ['pluralize', 'underscore', 'dasherize']) %>/infrastructure/persistence/relational/queries/<%= h.inflection.transform(entity, ['underscore', 'dasherize']) %>-queries.const.ts
+to: src/<%= version %>/<%= h.inflection.transform(entity, ['pluralize', 'underscore', 'dasherize']) %>/infrastructure/persistence/relational/queries/<%= h.inflection.transform(entity, ['underscore', 'dasherize']) %>-queries.const.ts
 after: // Add Query Here
 ---
 

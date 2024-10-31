@@ -1,11 +1,11 @@
-import { AuthConfig } from '@src/auth/config/auth-config.type';
-import { AppleConfig } from '@src/auth-apple/config/apple-config.type';
-import { FacebookConfig } from '@src/auth-facebook/config/facebook-config.type';
-import { GoogleConfig } from '@src/auth-google/config/google-config.type';
-import { TwitterConfig } from '@src/auth-twitter/config/twitter-config.type';
 import { DatabaseConfig } from '@src/database/config/database-config.type';
-import { FileConfig } from '@src/files/config/file-config.type';
-import { MailConfig } from '@src/mail/config/mail-config.type';
+import { AuthConfig } from '@src/v2/auth/config/auth-config.type';
+import { AppleConfig } from '@src/v2/auth-apple/config/apple-config.type';
+import { FacebookConfig } from '@src/v2/auth-facebook/config/facebook-config.type';
+import { GoogleConfig } from '@src/v2/auth-google/config/google-config.type';
+import { TwitterConfig } from '@src/v2/auth-twitter/config/twitter-config.type';
+import { FileConfig } from '@src/v2/files/config/file-config.type';
+import { MailConfig } from '@src/v2/mail/config/mail-config.type';
 
 import { AppConfig } from './app-config.type';
 

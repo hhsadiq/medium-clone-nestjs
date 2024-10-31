@@ -1,16 +1,16 @@
 ---
-to: "<%= isAddTestCase ? `src/${h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize'])}/__mock__/${h.inflection.transform(name, ['underscore', 'dasherize'])}.mock.ts` : null %>"
+to: "<%= isAddTestCase ? `src/${version}/${h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize'])}/__mock__/${h.inflection.transform(name, ['underscore', 'dasherize'])}.mock.ts` : null %>"
 ---
 <% if (functionalities.includes('findAll')) { %>
 import { IPaginationOptions } from "@src/utils/types/pagination-options";
 <% } %>
 <% if (functionalities.includes('create')) { %>
-import { Create<%= name %>Dto } from '@src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/dto/create-<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.dto';
+import { Create<%= name %>Dto } from '@src/<%= version %>/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/dto/create-<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.dto';
 <% } %>
 <% if (functionalities.includes('update')) { %>
-import { Update<%= name %>Dto } from '@src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/dto/update-<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.dto';
+import { Update<%= name %>Dto } from '@src/<%= version %>/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/dto/update-<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.dto';
 <% } %>
-import { <%= name %> } from '@src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/domain/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>';
+import { <%= name %> } from '@src/<%= version %>/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/domain/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>';
 // __mock__/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.mock.ts
 <% if (functionalities.includes('findAll')) { %>
 export const paginationOptions: IPaginationOptions = {

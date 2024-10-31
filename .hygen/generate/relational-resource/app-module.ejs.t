@@ -1,6 +1,6 @@
 ---
 inject: true
-to: src/app.module.ts
+to: src/<%= version %>/app.module.ts
 after: imports
 ---
     <%= h.inflection.transform(name, ['pluralize']) %>Module,

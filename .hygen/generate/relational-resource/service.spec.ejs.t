@@ -1,5 +1,5 @@
 ---
-to: "<%= isAddTestCase ? `src/${h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize'])}/${h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize'])}.service.spec.ts` : null %>"
+to: "<%= isAddTestCase ? `src/${version}/${h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize'])}/${h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize'])}.service.spec.ts` : null %>"
 ---
 import { Test, TestingModule } from '@nestjs/testing';
 <% if (functionalities.includes('update') || functionalities.includes('create') || functionalities.includes('findOne') || functionalities.includes('findAll')) { %>

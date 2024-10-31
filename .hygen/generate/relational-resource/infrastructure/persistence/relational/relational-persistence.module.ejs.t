@@ -1,5 +1,5 @@
 ---
-to: src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/infrastructure/persistence/relational/relational-persistence.module.ts
+to: src/<%= version %>/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/infrastructure/persistence/relational/relational-persistence.module.ts
 ---
 import { Module } from '@nestjs/common';
 import { <%= name %>AbstractRepository } from '../<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.abstract.repository';

@@ -1,5 +1,5 @@
 ---
-to: "<%= functionalities.includes('update') ? `src/${h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize'])}/dto/update-${h.inflection.transform(name, ['underscore', 'dasherize'])}.dto.ts` : null %>"
+to: "<%= functionalities.includes('update') ? `src/${version}/${h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize'])}/dto/update-${h.inflection.transform(name, ['underscore', 'dasherize'])}.dto.ts` : null %>"
 ---
 // Don't forget to use the class-validator decorators in the DTO properties.
 // import { Allow } from 'class-validator';

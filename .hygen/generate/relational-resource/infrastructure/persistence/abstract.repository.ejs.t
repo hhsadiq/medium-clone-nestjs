@@ -1,14 +1,14 @@
 ---
-to: src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/infrastructure/persistence/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.abstract.repository.ts
+to: src/<%= version %>/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/infrastructure/persistence/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.abstract.repository.ts
 ---
 <% if (functionalities.includes('update')) { %>
-import { DeepPartial } from '../../../utils/types/deep-partial.type';
+import { DeepPartial } from '@src/utils/types/deep-partial.type';
 <% } %>
 <% if (functionalities.includes('findOne')) { %>
 import { NullableType } from '@src/utils/types/nullable.type';
 <% } %>
 <% if (functionalities.includes('findAll')) { %>
-import { IPaginationOptions } from '../../../utils/types/pagination-options';
+import { IPaginationOptions } from '@src/utils/types/pagination-options';
 <% } %>
 <% if (functionalities.includes('update') || functionalities.includes('create') || functionalities.includes('findOne') || functionalities.includes('findAll') || functionalities.includes('delete')) { %>
 import { <%= name %> } from '../../domain/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>';

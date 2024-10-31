@@ -1,5 +1,20 @@
 module.exports = {
   prompt: async ({ prompter, args }) => {
+    // Step 0: Ask for Api version
+    const { version } = await prompter.prompt({
+      type: 'input',
+      name: 'version',
+      message:
+        'Enter the API version of resource in which you want to insert property (e.g. "v1", "v2"):',
+      validate: (version) => {
+        if (!version.trim()) {
+          return 'API version is required';
+        }
+        return true;
+      },
+      format: (version) => version.trim(),
+    });
+
     // Step 1: Ask for entity name
     const { name } = await prompter.prompt({
       type: 'input',
@@ -85,6 +100,7 @@ module.exports = {
 
     // Return the collected data
     return {
+      version,
       name,
       property,
       isOptional, // Include the isOptional field

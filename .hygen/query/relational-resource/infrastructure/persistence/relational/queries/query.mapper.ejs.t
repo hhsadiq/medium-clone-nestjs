@@ -1,5 +1,5 @@
 ---
-to: src/<%= h.inflection.transform(entity, ['pluralize', 'underscore', 'dasherize']) %>/infrastructure/persistence/relational/queries/<%= h.inflection.transform(entity, ['underscore', 'dasherize']) %>-<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.mapper.ts
+to: src/<%= version %>/<%= h.inflection.transform(entity, ['pluralize', 'underscore', 'dasherize']) %>/infrastructure/persistence/relational/queries/<%= h.inflection.transform(entity, ['underscore', 'dasherize']) %>-<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.mapper.ts
 ---
 import { <%= entity %><%= name %> } from '@src/<%= h.inflection.transform(entity, ['pluralize', 'underscore', 'dasherize']) %>/domain/queries/<%= h.inflection.transform(entity, ['underscore', 'dasherize']) %>-<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>';
 
