@@ -11,6 +11,7 @@ import appConfig from '@src/config/app.config';
 import { AllConfigType } from '@src/config/config.type';
 import databaseConfig from '@src/database/config/database.config';
 import { TypeOrmConfigService } from '@src/database/typeorm-config.service';
+import { MailerModule } from '@src/mailer/mailer.module';
 
 import { ArticlesModule } from './articles/articles.module';
 import { AuthModule } from './auth/auth.module';
@@ -29,7 +30,6 @@ import { FilesModule } from './files/files.module';
 import { HomeModule } from './home/home.module';
 import mailConfig from './mail/config/mail.config';
 import { MailModule } from './mail/mail.module';
-import { MailerModule } from './mailer/mailer.module';
 import { SessionModule } from './session/session.module';
 import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';

@@ -5,7 +5,7 @@ import { OAuth2Client } from 'google-auth-library';
 import { ERROR_MESSAGES } from '@src/common/constants';
 import { UNPROCESSABLE_ENTITY } from '@src/common/exceptions';
 import { AllConfigType } from '@src/config/config.type';
-import { SocialInterface } from '@src/v1/social/interfaces/social.interface';
+import { SocialInterface } from '@src/social/interfaces/social.interface';
 
 import { AuthGoogleLoginDto } from './dto/auth-google-login.dto';
 

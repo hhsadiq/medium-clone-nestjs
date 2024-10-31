@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import Twitter from 'twitter';
 
 import { AllConfigType } from '@src/config/config.type';
-import { SocialInterface } from '@src/v1/social/interfaces/social.interface';
+import { SocialInterface } from '@src/social/interfaces/social.interface';
 
 import { AuthTwitterLoginDto } from './dto/auth-twitter-login.dto';
 

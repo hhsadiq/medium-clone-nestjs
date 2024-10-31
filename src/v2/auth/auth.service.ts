@@ -15,12 +15,12 @@ import {
   UNPROCESSABLE_ENTITY,
 } from '@src/common/exceptions';
 import { AllConfigType } from '@src/config/config.type';
+import { SocialInterface } from '@src/social/interfaces/social.interface';
 import { NullableType } from '@src/utils/types/nullable.type';
 import { MailService } from '@src/v2/mail/mail.service';
 import { RoleEnum } from '@src/v2/roles/roles.enum';
 import { Session } from '@src/v2/session/domain/session';
 import { SessionService } from '@src/v2/session/session.service';
-import { SocialInterface } from '@src/v2/social/interfaces/social.interface';
 import { StatusEnum } from '@src/v2/statuses/statuses.enum';
 import { User } from '@src/v2/users/domain/user';
 import { UsersService } from '@src/v2/users/users.service';

@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Facebook } from 'fb';
 
 import { AllConfigType } from '@src/config/config.type';
-import { SocialInterface } from '@src/v1/social/interfaces/social.interface';
+import { SocialInterface } from '@src/social/interfaces/social.interface';
 
 import { AuthFacebookLoginDto } from './dto/auth-facebook-login.dto';
 import { FacebookInterface } from './interfaces/facebook.interface';

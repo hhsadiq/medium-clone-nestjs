@@ -5,8 +5,8 @@ import { ConfigService } from '@nestjs/config';
 import { I18nContext } from 'nestjs-i18n';
 
 import { AllConfigType } from '@src/config/config.type';
+import { MailerService } from '@src/mailer/mailer.service';
 import { MaybeType } from '@src/utils/types/maybe.type';
-import { MailerService } from '@src/v2/mailer/mailer.service';
 
 import { MailData } from './interfaces/mail-data.interface';
 
