@@ -193,7 +193,7 @@ export class UsersController {
   async followUser(
     @Param('username') username: string,
     @Request() req,
-  ): Promise<{ message: string }> {
+  ): Promise<UserResponseMessageDto> {
     const userId = req.user.id;
     const result = await this.usersService.followUser(userId, username);
     return { message: result };
@@ -209,7 +209,7 @@ export class UsersController {
   async unFollowUser(
     @Param('username') username: string,
     @Request() req,
-  ): Promise<{ message: string }> {
+  ): Promise<UserResponseMessageDto> {
     const userId = req.user.id;
     const result = await this.usersService.unFollowUser(userId, username);
     return { message: result };

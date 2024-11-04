@@ -223,7 +223,7 @@ export class ArticlesController {
   async favoriteArticle(
     @Param('slug') slug: string,
     @Request() request,
-  ): Promise<{ message: string }> {
+  ): Promise<ArticleResponseMessageDto> {
     const user = request.user;
     const result = await this.articlesService.favoriteArticle(slug, user);
     return { message: result };
@@ -243,7 +243,7 @@ export class ArticlesController {
   async unfavoriteArticle(
     @Param('slug') slug: string,
     @Request() request,
-  ): Promise<{ message: string }> {
+  ): Promise<ArticleResponseMessageDto> {
     const user = request.user;
     const result = await this.articlesService.unfavoriteArticle(slug, user);
     return { message: result };
