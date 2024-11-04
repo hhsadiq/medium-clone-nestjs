@@ -20,7 +20,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { FavoriteArticle } from '@src/articles/domain/favorite-article';
 import { Comment } from '@src/comments/domain/comment';
 import {
   InfinityPaginationResponse,
@@ -34,6 +33,7 @@ import { infinityPagination } from '@src/utils/infinity-pagination';
 
 import { ArticlesService } from './articles.service';
 import { Article } from './domain/article';
+import { ArticleResponseMessageDto } from './dto/article-response-message.dto';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { CreateCommentPathParamDto } from './dto/create-comment-path-param.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -218,14 +218,15 @@ export class ArticlesController {
     required: true,
   })
   @ApiResponse({
-    type: Article,
+    type: ArticleResponseMessageDto,
   })
   async favoriteArticle(
     @Param('slug') slug: string,
     @Request() request,
-  ): Promise<FavoriteArticle> {
+  ): Promise<{ message: string }> {
     const user = request.user;
-    return this.articlesService.favoriteArticle(slug, user);
+    const result = await this.articlesService.favoriteArticle(slug, user);
+    return { message: result };
   }
 
   @ApiBearerAuth()
@@ -237,14 +238,15 @@ export class ArticlesController {
     required: true,
   })
   @ApiResponse({
-    type: Article,
+    type: ArticleResponseMessageDto,
   })
   async unfavoriteArticle(
     @Param('slug') slug: string,
     @Request() request,
-  ): Promise<void> {
+  ): Promise<{ message: string }> {
     const user = request.user;
-    return this.articlesService.unfavoriteArticle(slug, user);
+    const result = await this.articlesService.unfavoriteArticle(slug, user);
+    return { message: result };
   }
 
   @ApiBearerAuth()

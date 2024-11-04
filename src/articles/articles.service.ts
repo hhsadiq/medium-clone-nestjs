@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { diff, unique } from 'radash';
 import slugify from 'slugify';
 
-import { FavoriteArticle } from '@src/articles/domain/favorite-article';
 import { JwtPayloadType } from '@src/auth/strategies/types/jwt-payload.type';
 import { CommentsService } from '@src/comments/comments.service';
 import { Comment } from '@src/comments/domain/comment';
@@ -15,6 +14,10 @@ import {
   UNPROCESSABLE_ENTITY,
   BAD_REQUEST,
 } from '@src/common/exceptions';
+import {
+  ARTICLE_FAVORITE_SUCCESS,
+  ARTICLE_UNFAVORITE_SUCCESS,
+} from '@src/common/response-messages';
 import { DatabaseHelperRepository } from '@src/database-helpers/database-helper';
 import { GenAiService } from '@src/gen-ai/gen-ai.service';
 import { Prompts } from '@src/gen-ai/prompts';
@@ -237,7 +240,7 @@ export class ArticlesService {
     return article;
   }
 
-  async favoriteArticle(slug: string, user: User): Promise<FavoriteArticle> {
+  async favoriteArticle(slug: string, user: User): Promise<string> {
     const article = await this.articleRepository.findBySlug(slug);
     if (!article) {
       throw NOT_FOUND('Article', { slug });
@@ -258,14 +261,12 @@ export class ArticlesService {
         id: article.id,
       } as Article,
     };
+    await this.articleRepository.createFavorite(clonedPayload);
 
-    const favoritedArticle =
-      await this.articleRepository.createFavorite(clonedPayload);
-
-    return favoritedArticle;
+    return ARTICLE_FAVORITE_SUCCESS;
   }
 
-  async unfavoriteArticle(slug: string, user: User): Promise<void> {
+  async unfavoriteArticle(slug: string, user: User): Promise<string> {
     const article = await this.articleRepository.findBySlug(slug);
     if (!article) {
       throw NOT_FOUND('Article', { slug });
@@ -278,10 +279,11 @@ export class ArticlesService {
 
     if (!existingFavorite) throw BAD_REQUEST(ARTICLE_NOT_FAVORITE_ERROR);
 
-    return await this.articleRepository.removeFavorite(existingFavorite.id);
+    await this.articleRepository.removeFavorite(existingFavorite.id);
+    return ARTICLE_UNFAVORITE_SUCCESS;
   }
 
-  async getFeedArticles({
+  getFeedArticles({
     paginationOptions: { limit, page },
     user,
   }: {

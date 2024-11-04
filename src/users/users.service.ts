@@ -15,6 +15,10 @@ import {
   CustomException,
   BAD_REQUEST,
 } from '@src/common/exceptions';
+import {
+  USER_FOLLOW_SUCCESS,
+  USER_UNFOLLOW_SUCCESS,
+} from '@src/common/response-messages';
 import { FilesService } from '@src/files/files.service';
 import { RoleEnum } from '@src/roles/roles.enum';
 import { StatusEnum } from '@src/statuses/statuses.enum';
@@ -236,21 +240,7 @@ export class UsersService {
     if (!existingFollow) throw BAD_REQUEST(NOT_FOLLOWING_ERROR);
 
     await this.usersRepository.removeFollow(existingFollow.id);
-
-    const followerProfile = await this.findAndValidate('id', followerId);
-
-    return {
-      id: followerProfile.id,
-      firstName: followerProfile.firstName,
-      lastName: followerProfile.lastName,
-      email: followerProfile.email,
-      followingUser: {
-        firstName: followingUser.firstName,
-        lastName: followingUser.lastName,
-        email: followingUser.email,
-        isFollowing: false,
-      },
-    };
+    return USER_UNFOLLOW_SUCCESS;
   }
 
   async followUser(followerId: number, username: string): Promise<any> {
@@ -282,18 +272,6 @@ export class UsersService {
 
     await this.usersRepository.createFollow(clonedPayload);
 
-    const followerProfile = await this.findAndValidate('id', followerId);
-    return {
-      id: followerProfile.id,
-      firstName: followerProfile.firstName,
-      lastName: followerProfile.lastName,
-      email: followerProfile.email,
-      followingUser: {
-        firstName: followingUser.firstName,
-        lastName: followingUser.lastName,
-        email: followingUser.email,
-        isFollowing: true,
-      },
-    };
+    return USER_FOLLOW_SUCCESS;
   }
 }

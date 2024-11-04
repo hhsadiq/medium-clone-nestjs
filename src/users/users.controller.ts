@@ -37,11 +37,11 @@ import { User } from './domain/user';
 import { CreateUserDto } from './dto/create-user.dto';
 import { QueryUserDto } from './dto/query-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserResponseMessageDto } from './dto/user-response-message.dto';
 import { UsersService } from './users.service';
 
 @ApiBearerAuth()
-@Roles(RoleEnum.admin)
-@UseGuards(AuthGuard('jwt'), RolesGuard)
+@UseGuards(AuthGuard('jwt'))
 @ApiTags('Users')
 @Controller({
   path: 'users',
@@ -49,6 +49,8 @@ import { UsersService } from './users.service';
 })
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+  @Roles(RoleEnum.admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiOkResponse({
     type: User,
   })
@@ -61,6 +63,8 @@ export class UsersController {
     return this.usersService.getUsersSummary();
   }
 
+  @Roles(RoleEnum.admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiOkResponse({
     type: User,
   })
@@ -80,6 +84,8 @@ export class UsersController {
     return this.usersService.getUserSummary(id);
   }
 
+  @Roles(RoleEnum.admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiCreatedResponse({
     type: User,
   })
@@ -92,6 +98,8 @@ export class UsersController {
     return this.usersService.create(createProfileDto);
   }
 
+  @Roles(RoleEnum.admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiOkResponse({
     type: InfinityPaginationResponse(User),
   })
@@ -122,6 +130,8 @@ export class UsersController {
     );
   }
 
+  @Roles(RoleEnum.admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiOkResponse({
     type: User,
   })
@@ -139,6 +149,8 @@ export class UsersController {
     return this.usersService.findById(id);
   }
 
+  @Roles(RoleEnum.admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiOkResponse({
     type: User,
   })
@@ -158,7 +170,8 @@ export class UsersController {
   ): Promise<User | null> {
     return this.usersService.update(id, updateProfileDto);
   }
-
+  @Roles(RoleEnum.admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete(':id')
   @ApiParam({
     name: 'id',
@@ -170,37 +183,35 @@ export class UsersController {
     return this.usersService.remove(id);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
   @Post(':username/follow')
-  @HttpCode(HttpStatus.OK)
   @ApiParam({
     name: 'username',
     type: String,
     required: true,
   })
-  @ApiOkResponse({ type: User })
+  @ApiOkResponse({ type: UserResponseMessageDto })
   async followUser(
     @Param('username') username: string,
     @Request() req,
-  ): Promise<any> {
+  ): Promise<{ message: string }> {
     const userId = req.user.id;
-    return await this.usersService.followUser(userId, username);
+    const result = await this.usersService.followUser(userId, username);
+    return { message: result };
   }
 
   @Delete(':username/follow')
-  @HttpCode(HttpStatus.OK)
   @ApiParam({
     name: 'username',
     type: String,
     required: true,
   })
-  @ApiOkResponse({ type: User })
+  @ApiOkResponse({ type: UserResponseMessageDto })
   async unFollowUser(
     @Param('username') username: string,
     @Request() req,
-  ): Promise<any> {
+  ): Promise<{ message: string }> {
     const userId = req.user.id;
-    return await this.usersService.unFollowUser(userId, username);
+    const result = await this.usersService.unFollowUser(userId, username);
+    return { message: result };
   }
 }
