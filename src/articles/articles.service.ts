@@ -32,6 +32,7 @@ import { Article } from './domain/article';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { ArticleAbstractRepository } from './infrastructure/persistence/article.abstract.repository';
+import { ClapRelationalRepository } from './infrastructure/persistence/relational/repositories/clap.repository';
 
 @Injectable()
 export class ArticlesService {
@@ -41,8 +42,12 @@ export class ArticlesService {
     private readonly tagsService: TagsService,
     private readonly dbHelperRepository: DatabaseHelperRepository,
     private readonly genAiService: GenAiService,
+    private readonly clapRepository: ClapRelationalRepository,
   ) {}
 
+  async countClapsForArticle(articleId: string): Promise<number> {
+    return await this.clapRepository.getTotalClaps(articleId);
+  }
   async create(
     createArticleDto: CreateArticleDto,
     userJwtPayload: JwtPayloadType,
@@ -128,17 +133,27 @@ export class ArticlesService {
     return id;
   }
 
-  findAllWithPagination({
+  async findAllWithPagination({
     paginationOptions,
   }: {
     paginationOptions: IPaginationOptions;
   }) {
-    return this.articleRepository.findAllWithPagination({
+    const articles = await this.articleRepository.findAllWithPagination({
       paginationOptions: {
         page: paginationOptions.page,
         limit: paginationOptions.limit,
       },
     });
+
+    const articlesWithClaps = await Promise.all(
+      articles.map(async (article) => {
+        const totalClaps = await this.countClapsForArticle(article.id);
+
+        return { ...article, totalClaps };
+      }),
+    );
+
+    return articlesWithClaps;
   }
 
   async findAllWithPaginationStandard({
@@ -156,8 +171,12 @@ export class ArticlesService {
     return pagination(data, total, paginationOptions);
   }
 
-  findOne(id: Article['id']) {
-    return this.findAndValidate('id', id, true);
+  async findOne(id: Article['id']) {
+    const article = await this.findAndValidate('id', id, true);
+
+    const totalClaps = await this.countClapsForArticle(id);
+
+    return { ...article, totalClaps };
   }
 
   async update(id: Article['id'], updateArticleDto: UpdateArticleDto) {
@@ -237,7 +256,33 @@ export class ArticlesService {
     if (!article) {
       throw NOT_FOUND('Article', { [field]: value });
     }
-    return article;
+    const totalClaps = await this.countClapsForArticle(article.id);
+
+    return { ...article, totalClaps };
+  }
+
+  async clapArticle(
+    id: Article['id'],
+    userJwtPayload: JwtPayloadType,
+  ): Promise<Article> {
+    await this.findAndValidate('id', id);
+
+    const userIdAsNumber =
+      typeof userJwtPayload.id === 'string'
+        ? parseInt(userJwtPayload.id, 10)
+        : userJwtPayload.id;
+
+    const clapPayload = {
+      articleId: id,
+      userId: userIdAsNumber,
+    };
+
+    await this.clapRepository.createOrIncrement(
+      clapPayload.articleId,
+      clapPayload.userId,
+    );
+
+    return this.findAndValidate('id', id, true);
   }
 
   async favoriteArticle(slug: string, user: User): Promise<string> {

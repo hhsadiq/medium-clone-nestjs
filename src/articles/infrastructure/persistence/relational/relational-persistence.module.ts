@@ -6,7 +6,9 @@ import { FavoriteArticleEntity as ArticleFavoriteEntity } from '@src/articles/in
 import { UserFollowEntity as UserFollowEntity } from '@src/users/infrastructure/persistence/relational/entities/user-follow.entity';
 
 import { ArticleEntity } from './entities/article.entity';
+import { ClapEntity } from './entities/clap.entity';
 import { ArticleRelationalRepository } from './repositories/article.repository';
+import { ClapRelationalRepository } from './repositories/clap.repository';
 
 @Module({
   imports: [
@@ -14,6 +16,7 @@ import { ArticleRelationalRepository } from './repositories/article.repository';
       ArticleEntity,
       ArticleFavoriteEntity,
       UserFollowEntity,
+      ClapEntity
     ]),
   ],
   providers: [
@@ -21,7 +24,8 @@ import { ArticleRelationalRepository } from './repositories/article.repository';
       provide: ArticleAbstractRepository,
       useClass: ArticleRelationalRepository,
     },
+    ClapRelationalRepository,
   ],
-  exports: [ArticleAbstractRepository],
+  exports: [ArticleAbstractRepository, ClapRelationalRepository],
 })
 export class RelationalArticlePersistenceModule {}

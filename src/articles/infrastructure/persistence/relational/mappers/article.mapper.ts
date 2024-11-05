@@ -23,6 +23,12 @@ export class ArticleMapper {
         (tagEntity: TagEntity) => tagEntity.name,
       );
     }
+    if (raw.claps) {
+      domainEntity.totalClaps = raw.claps.reduce(
+        (sum, clap) => sum + clap.counter,
+        0,
+      );
+    }
 
     domainEntity.createdAt = raw.created_at;
     domainEntity.updatedAt = raw.updated_at;

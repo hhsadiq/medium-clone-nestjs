@@ -39,6 +39,9 @@ export class Article {
   })
   tagList?: NullableType<Tag['name'][]>;
 
+  @ApiProperty()
+  totalClaps?: number;
+
   // @custom-inject-point
   @ApiProperty()
   createdAt: Date;

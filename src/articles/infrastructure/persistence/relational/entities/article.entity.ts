@@ -19,6 +19,7 @@ import { EntityRelationalHelper } from '@src/utils/relational-entity-helper';
 import { NullableType } from '@src/utils/types/nullable.type';
 
 import { FavoriteArticleEntity } from './favorite-article.entity';
+import { ClapEntity } from './clap.entity';
 
 @Entity({
   name: TABLES.article,
@@ -63,6 +64,9 @@ export class ArticleEntity extends EntityRelationalHelper {
     },
   })
   tagList?: NullableType<TagEntity[]>;
+
+  @OneToMany(() => ClapEntity, (clap) => clap.article)
+  claps: ClapEntity[];
 
   // @custom-inject-point
   @CreateDateColumn()
