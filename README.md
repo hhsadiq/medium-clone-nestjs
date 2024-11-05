@@ -8,20 +8,14 @@ Implementing the [Realworld Medium Clone Specifications](https://realworld-docs.
 
 ## Roadmap
 
-1. **Add Type and Example in Swagger APIProperty() Decorator**
+1. **Add Clap Feature for Articles**
 
-   - Update the Swagger `APIProperty()` decorator to include type and example properties for better API documentation.
+   - **Database**: Add a `clap` table with the following columns: `id`, `article_id` (foreign key), `user_id` (foreign key), and `counter`, with a composite primary key on `article_id` and `user_id`.
+   - **API to Clap an Article**: Create an API endpoint that allows users to clap for an article. Each clap will increment the counter associated with the user and article.
+   - **Get Articles API Update**: Modify the existing "get articles" API to include the total clap count for each article, aggregating claps from all users.
 
-2. **Integrate with Real-World Open Source Third-Party APIs**
-
-   - Build a solid architecture for interacting with third-party APIs to ensure seamless and reliable integrations.
-
-3. **Add Unit Testing and E2E Testing**
-
+2. **Add Unit Testing and E2E Testing**
    - Implement comprehensive unit and e2e tests to ensure code quality and functionality. Leverage Hygen templates to automate the creation of test files where possible, streamlining the testing process.
-
-4. **Implement Reaction System:**
-   - Introduce a user-friendly reaction system that enables users to interact with articles through emojis, facilitating quick responses and engagement.
 
 ## Features
 
