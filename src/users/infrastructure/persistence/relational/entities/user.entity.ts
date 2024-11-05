@@ -11,14 +11,19 @@ import {
   UpdateDateColumn,
   JoinColumn,
   OneToOne,
+  OneToMany,
 } from 'typeorm';
 
+import { ArticleEntity } from '@src/articles/infrastructure/persistence/relational/entities/article.entity';
+import { FavoriteArticleEntity } from '@src/articles/infrastructure/persistence/relational/entities/favorite-article.entity';
 import { AuthProvidersEnum } from '@src/auth/auth-providers.enum';
 import { TABLES } from '@src/common/constants';
 import { FileEntity } from '@src/files/infrastructure/persistence/relational/entities/file.entity';
 import { RoleEntity } from '@src/roles/infrastructure/persistence/relational/entities/role.entity';
 import { StatusEntity } from '@src/statuses/infrastructure/persistence/relational/entities/status.entity';
 import { EntityRelationalHelper } from '@src/utils/relational-entity-helper';
+
+import { UserFollowEntity as UserFollowEntity } from './user-follow.entity';
 
 // We use class-transformer in ORM entity and domain entity.
 // We duplicate these rules because you can choose not to use adapters
@@ -28,6 +33,13 @@ import { EntityRelationalHelper } from '@src/utils/relational-entity-helper';
   name: TABLES.user,
 })
 export class UserEntity extends EntityRelationalHelper {
+  @Column({
+    type: 'varchar',
+    unique: true,
+    nullable: true,
+  })
+  username: string | null;
+
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -83,6 +95,15 @@ export class UserEntity extends EntityRelationalHelper {
   })
   @JoinColumn({ name: 'status_id' })
   status?: StatusEntity;
+
+  @OneToMany(() => FavoriteArticleEntity, (favorite) => favorite.article)
+  articleFavorites: ArticleEntity[];
+
+  @OneToMany(() => UserFollowEntity, (follow) => follow.follower)
+  userFollowing: UserEntity[];
+
+  @OneToMany(() => UserFollowEntity, (follow) => follow.following)
+  userFollowers: UserEntity[];
 
   @CreateDateColumn()
   created_at: Date;

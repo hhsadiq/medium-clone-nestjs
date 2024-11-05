@@ -7,7 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcryptjs';
 import ms from 'ms';
 
-import { ERROR_MESSAGES } from '@src/common/constants';
+import { ERROR_MESSAGES } from '@src/common/error-messages';
 import {
   FORBIDDEN,
   NOT_FOUND,
@@ -135,6 +135,7 @@ export class AuthService {
         email: socialEmail ?? null,
         firstName: socialData.first_name ?? null,
         lastName: socialData.last_name ?? null,
+        username: socialData.username ?? null,
         socialId: socialData.id,
         provider: authProvider,
         role,
@@ -188,7 +189,7 @@ export class AuthService {
         id: RoleEnum.user,
       },
       status: {
-        id: StatusEnum.inactive,
+        id: StatusEnum.active,
       },
     });
 

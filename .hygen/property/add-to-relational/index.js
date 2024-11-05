@@ -75,6 +75,21 @@ module.exports = {
       customType = customTypeInput;
     }
 
+    // Step 2: Ask for property example
+    const { example } = await prompter.prompt({
+      type: 'input',
+      name: 'example',
+      message:
+        "Provide an example value for the property (e.g. 'John Doe' for a name property):",
+      validate: (input) => {
+        if (!input.trim()) {
+          return 'Property example is required';
+        }
+        return true;
+      },
+      format: (input) => input.trim(),
+    });
+
     // Step 5: Ask if the property should be added to DTO
     const { isAddToDto } = await prompter.prompt({
       type: 'confirm',
@@ -90,6 +105,7 @@ module.exports = {
       isOptional, // Include the isOptional field
       type: customType || type,
       isAddToDto,
+      example,
     };
   },
 };

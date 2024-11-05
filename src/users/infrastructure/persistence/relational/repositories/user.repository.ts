@@ -3,8 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository, SelectQueryBuilder } from 'typeorm';
 
 import { User } from '@src/users/domain/user';
+import { UserFollow } from '@src/users/domain/user-follow';
 import { FilterUserDto, SortUserDto } from '@src/users/dto/query-user.dto';
+import { UserFollowEntity } from '@src/users/infrastructure/persistence/relational/entities/user-follow.entity';
 import { UserEntity } from '@src/users/infrastructure/persistence/relational/entities/user.entity';
+import { UserFollowMapper } from '@src/users/infrastructure/persistence/relational/mappers/user-follow.mapper';
 import { UserMapper } from '@src/users/infrastructure/persistence/relational/mappers/user.mapper';
 import { UserAbstractRepository } from '@src/users/infrastructure/persistence/user.abstract.repository';
 import { NullableType } from '@src/utils/types/nullable.type';
@@ -18,6 +21,8 @@ export class UsersRelationalRepository implements UserAbstractRepository {
   constructor(
     @InjectRepository(UserEntity)
     private readonly usersRepository: Repository<UserEntity>,
+    @InjectRepository(UserFollowEntity)
+    private readonly usersFollowRepository: Repository<UserFollowEntity>,
   ) {}
 
   async create(data: User): Promise<User> {
@@ -68,11 +73,35 @@ export class UsersRelationalRepository implements UserAbstractRepository {
     return entity ? UserMapper.toDomain(entity) : null;
   }
 
+  async findByIdWithRelations(id: User['id']): Promise<NullableType<User>> {
+    const entity = await this.usersRepository.findOne({
+      where: { id: Number(id) },
+      relations: ['followers', 'following'],
+    });
+
+    if (!entity) {
+      return null;
+    }
+    return UserMapper.toDomain(entity);
+  }
+
   async findByEmail(email: User['email']): Promise<NullableType<User>> {
     if (!email) return null;
 
     const entity = await this.usersRepository.findOne({
       where: { email },
+    });
+
+    return entity ? UserMapper.toDomain(entity) : null;
+  }
+
+  async findByUsername(
+    username: User['username'],
+  ): Promise<NullableType<User>> {
+    if (!username) return null;
+
+    const entity = await this.usersRepository.findOne({
+      where: { username },
     });
 
     return entity ? UserMapper.toDomain(entity) : null;
@@ -125,5 +154,31 @@ export class UsersRelationalRepository implements UserAbstractRepository {
   ): Promise<NullableType<UserSummary>> {
     const summary = await query.where({ id: Number(id) }).getOne();
     return summary ? UserSummaryMapper.toDomain(summary) : null;
+  }
+
+  async createFollow(data: UserFollow): Promise<UserFollow> {
+    const persistenceModel = UserFollowMapper.toPersistence(data);
+    const newEntity = await this.usersFollowRepository.save(
+      this.usersFollowRepository.create(persistenceModel),
+    );
+    return UserFollowMapper.toDomain(newEntity);
+  }
+
+  async findFollow(
+    followerId: User['id'],
+    followingId: User['id'],
+  ): Promise<NullableType<UserFollow>> {
+    const entity = await this.usersFollowRepository.findOne({
+      where: {
+        follower: { id: Number(followerId) },
+        following: { id: Number(followingId) },
+      },
+      relations: ['follower', 'following'],
+    });
+    return entity ? UserFollowMapper.toDomain(entity) : null;
+  }
+
+  async removeFollow(id: UserFollowEntity['id']): Promise<void> {
+    await this.usersFollowRepository.delete(id);
   }
 }

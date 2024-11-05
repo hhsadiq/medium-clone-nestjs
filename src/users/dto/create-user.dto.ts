@@ -6,6 +6,7 @@ import {
   IsNotEmpty,
   IsOptional,
   MinLength,
+  IsString,
 } from 'class-validator';
 
 import { FileDto } from '@src/files/dto/file.dto';
@@ -14,6 +15,11 @@ import { StatusDto } from '@src/statuses/dto/status.dto';
 import { lowerCaseTransformer } from '@src/utils/transformers/lower-case.transformer';
 
 export class CreateUserDto {
+  @ApiProperty({ example: 'user_01', type: String })
+  @IsString()
+  @IsNotEmpty()
+  username: string | null;
+
   @ApiProperty({ example: 'test1@example.com', type: String })
   @Transform(lowerCaseTransformer)
   @IsNotEmpty()

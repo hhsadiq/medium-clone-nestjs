@@ -29,6 +29,7 @@ export class CreateUser1715028537217 implements MigrationInterface {
       `CREATE TABLE "user" (
         "id" SERIAL NOT NULL,
         "email" character varying,
+        "username" character varying,
         "password" character varying,
         "provider" character varying NOT NULL DEFAULT 'email',
         "social_id" character varying,
@@ -41,6 +42,7 @@ export class CreateUser1715028537217 implements MigrationInterface {
         "role_id" integer,
         "status_id" integer,
         CONSTRAINT "UQ_e12875dfb3b1d92d7d7c5377e22" UNIQUE ("email"),
+        CONSTRAINT "UQ_fa456b9e1d3d9e9a1a1c4e2d9c2" UNIQUE ("username"),
         CONSTRAINT "REL_75e2be4ce11d447ef43be0e374" UNIQUE ("photo_id"),
         CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id")
       )`,

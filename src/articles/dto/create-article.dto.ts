@@ -1,9 +1,11 @@
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
-  // decorators here
-  ApiProperty,
-  ApiPropertyOptional,
-} from '@nestjs/swagger';
-import { IsArray, IsOptional, IsString } from 'class-validator';
+  IsArray,
+  IsOptional,
+  IsString,
+  ValidateIf,
+  IsBoolean,
+} from 'class-validator';
 
 import { Tag } from '@src/tags/domain/tag';
 
@@ -16,7 +18,13 @@ export class CreateArticleDto {
   @IsString()
   description: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional({ default: false })
+  @IsOptional()
+  @IsBoolean()
+  autoGenerateTitle?: boolean;
+
+  @ApiPropertyOptional()
+  @ValidateIf((o) => !o.autoGenerateTitle)
   @IsString()
   title: string;
 
@@ -25,6 +33,4 @@ export class CreateArticleDto {
   @IsArray()
   @IsString({ each: true })
   tagList?: Tag['name'][];
-
-  // Don't forget to use the class-validator decorators in the DTO properties.
 }

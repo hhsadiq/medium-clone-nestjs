@@ -10,9 +10,13 @@ export class <%= name %> {
   id: string;
 
   // @custom-inject-point
-  @ApiProperty()
+  @ApiProperty({
+    type: Date,
+  })
   createdAt: Date;
 
-  @ApiProperty()
+  @ApiProperty({
+    type: Date,
+  })
   updatedAt: Date;
 }

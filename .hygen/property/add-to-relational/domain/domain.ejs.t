@@ -4,5 +4,8 @@ to: src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize'
 after: "export class"
 ---
 
-@ApiProperty()
+@ApiProperty({
+  type: <%= h.getPropertyType(type) %>,
+  example: "<%= example %>",
+})
 <%= h.inflection.camelize(property, true) %><% if (isOptional) { -%>?<% } -%>: <%= h.getType(type) %>;

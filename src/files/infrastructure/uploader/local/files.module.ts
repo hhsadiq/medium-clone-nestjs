@@ -4,7 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 
-import { ERROR_MESSAGES } from '@src/common/constants';
+import { ERROR_MESSAGES } from '@src/common/error-messages';
 import { UNPROCESSABLE_ENTITY } from '@src/common/exceptions';
 import { AllConfigType } from '@src/config/config.type';
 import { RelationalFilePersistenceModule } from '@src/files/infrastructure/persistence/relational/relational-persistence.module';

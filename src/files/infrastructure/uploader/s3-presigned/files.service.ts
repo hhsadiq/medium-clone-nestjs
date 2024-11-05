@@ -8,7 +8,7 @@ import {
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
 import { ConfigService } from '@nestjs/config';
 
-import { ERROR_MESSAGES } from '@src/common/constants';
+import { ERROR_MESSAGES } from '@src/common/error-messages';
 import { UNPROCESSABLE_ENTITY } from '@src/common/exceptions';
 import { FileType } from '@src/files/domain/file';
 import { FileAbstractRepository } from '@src/files/infrastructure/persistence/file.abstract.repository';

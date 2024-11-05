@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { ERROR_MESSAGES } from '@src/common/constants';
+import { ERROR_MESSAGES } from '@src/common/error-messages';
 import { UNPROCESSABLE_ENTITY } from '@src/common/exceptions';
 import { FileType } from '@src/files/domain/file';
 import { FileAbstractRepository } from '@src/files/infrastructure/persistence/file.abstract.repository';

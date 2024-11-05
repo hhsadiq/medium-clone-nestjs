@@ -9,6 +9,12 @@ const idType = Number;
 
 export class User {
   @ApiProperty({
+    type: String,
+    example: 'user_01',
+  })
+  username: string | null;
+
+  @ApiProperty({
     type: idType,
   })
   id: number | string;

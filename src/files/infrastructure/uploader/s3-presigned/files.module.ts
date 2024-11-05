@@ -5,7 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MulterModule } from '@nestjs/platform-express';
 import multerS3 from 'multer-s3';
 
-import { ERROR_MESSAGES } from '@src/common/constants';
+import { ERROR_MESSAGES } from '@src/common/error-messages';
 import { UNPROCESSABLE_ENTITY } from '@src/common/exceptions';
 import { AllConfigType } from '@src/config/config.type';
 import { RelationalFilePersistenceModule } from '@src/files/infrastructure/persistence/relational/relational-persistence.module';

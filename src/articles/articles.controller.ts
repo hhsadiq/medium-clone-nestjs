@@ -16,6 +16,7 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiParam,
+  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 
@@ -32,10 +33,12 @@ import { infinityPagination } from '@src/utils/infinity-pagination';
 
 import { ArticlesService } from './articles.service';
 import { Article } from './domain/article';
+import { ArticleResponseMessageDto } from './dto/article-response-message.dto';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { CreateCommentPathParamDto } from './dto/create-comment-path-param.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { DeleteCommentPathParamDto } from './dto/delete-comment-path-param.dto';
+import { FindAllArticlesFeedDto } from './dto/find-all-articles-feed.dto';
 import { FindAllArticlesDto } from './dto/find-all-articles.dto';
 import { FindAllCommentsDto } from './dto/find-all-comments.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
@@ -204,5 +207,71 @@ export class ArticlesController {
   ) {
     const { id, slug } = params;
     return this.articlesService.removeComment(id, slug, request.user);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Post(':slug/favorite')
+  @ApiParam({
+    name: 'slug',
+    type: String,
+    required: true,
+  })
+  @ApiResponse({
+    type: ArticleResponseMessageDto,
+  })
+  async favoriteArticle(
+    @Param('slug') slug: string,
+    @Request() request,
+  ): Promise<ArticleResponseMessageDto> {
+    const user = request.user;
+    const result = await this.articlesService.favoriteArticle(slug, user);
+    return { message: result };
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Delete(':slug/favorite')
+  @ApiParam({
+    name: 'slug',
+    type: String,
+    required: true,
+  })
+  @ApiResponse({
+    type: ArticleResponseMessageDto,
+  })
+  async unfavoriteArticle(
+    @Param('slug') slug: string,
+    @Request() request,
+  ): Promise<ArticleResponseMessageDto> {
+    const user = request.user;
+    const result = await this.articlesService.unfavoriteArticle(slug, user);
+    return { message: result };
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/user/feed')
+  @ApiOkResponse({
+    type: InfinityPaginationResponse(Article),
+  })
+  async getFeedArticles(
+    @Request() request,
+    @Query() query: FindAllArticlesFeedDto,
+  ): Promise<InfinityPaginationResponseDto<Article>> {
+    const page = query?.page ?? 1;
+    let limit = query?.limit ?? 10;
+    if (limit > 50) {
+      limit = 50;
+    }
+    const user = request.user;
+
+    return infinityPagination(
+      await this.articlesService.getFeedArticles({
+        paginationOptions: { limit, page },
+        user,
+      }),
+      { page, limit },
+    );
   }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { OAuth2Client } from 'google-auth-library';
 
-import { ERROR_MESSAGES } from '@src/common/constants';
+import { ERROR_MESSAGES } from '@src/common/error-messages';
 import { UNPROCESSABLE_ENTITY } from '@src/common/exceptions';
 import { AllConfigType } from '@src/config/config.type';
 import { SocialInterface } from '@src/social/interfaces/social.interface';
