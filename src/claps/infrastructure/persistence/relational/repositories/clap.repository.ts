@@ -6,7 +6,6 @@ import { Clap } from '@src/claps/domain/clap';
 import { ClapAbstractRepository } from '@src/claps/infrastructure/persistence/clap.abstract.repository';
 import { ClapEntity } from '@src/claps/infrastructure/persistence/relational/entities/clap.entity';
 import { ClapMapper } from '@src/claps/infrastructure/persistence/relational/mappers/clap.mapper';
-import { NullableType } from '@src/utils/types/nullable.type';
 import { IPaginationOptions } from '@src/utils/types/pagination-options';
 
 @Injectable()
@@ -35,32 +34,5 @@ export class ClapRelationalRepository implements ClapAbstractRepository {
     });
 
     return entities.map((entity) => ClapMapper.toDomain(entity));
-  }
-
-  async findById(id: Clap['id']): Promise<NullableType<Clap>> {
-    const entity = await this.clapRepository.findOne({
-      where: { id },
-    });
-
-    return entity ? ClapMapper.toDomain(entity) : null;
-  }
-
-  async update(id: Clap['id'], payload: Partial<Clap>): Promise<Clap | null> {
-    const entity = await this.clapRepository.findOne({
-      where: { id },
-    });
-
-    if (!entity) return null;
-
-    const updatedEntity = await this.clapRepository.save(
-      this.clapRepository.create(
-        ClapMapper.toPersistence({
-          ...ClapMapper.toDomain(entity),
-          ...payload,
-        }),
-      ),
-    );
-
-    return ClapMapper.toDomain(updatedEntity);
   }
 }

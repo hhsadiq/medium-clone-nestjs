@@ -4,17 +4,11 @@ import { NOT_FOUND, UNPROCESSABLE_ENTITY } from '@src/common/exceptions';
 import { IPaginationOptions } from '@src/utils/types/pagination-options';
 
 import { Clap } from './domain/clap';
-import { CreateClapDto } from './dto/create-clap.dto';
-import { UpdateClapDto } from './dto/update-clap.dto';
 import { ClapAbstractRepository } from './infrastructure/persistence/clap.abstract.repository';
 
 @Injectable()
 export class ClapsService {
   constructor(private readonly clapRepository: ClapAbstractRepository) {}
-
-  create(createClapDto: CreateClapDto) {
-    return this.clapRepository.create(createClapDto);
-  }
 
   findAllWithPagination({
     paginationOptions,
@@ -31,14 +25,6 @@ export class ClapsService {
 
   findOne(id: Clap['id']) {
     return this.findAndValidate('id', id);
-  }
-
-  update(id: Clap['id'], updateClapDto: UpdateClapDto) {
-    const clap = this.clapRepository.update(id, updateClapDto);
-    if (!clap) {
-      throw NOT_FOUND('Clap', { id });
-    }
-    return clap;
   }
 
   async findAndValidate(field, value, fetchRelations = false) {

@@ -4,7 +4,12 @@ import { ClapEntity } from '@src/claps/infrastructure/persistence/relational/ent
 export class ClapMapper {
   static toDomain(raw: ClapEntity): Clap {
     const domainEntity = new Clap();
-    domainEntity.id = raw.id;
+    domainEntity.counter = raw.counter;
+
+    domainEntity.userId = raw.user_id;
+
+    domainEntity.articleId = raw.article_id;
+
     domainEntity.createdAt = raw.created_at;
     domainEntity.updatedAt = raw.updated_at;
 
@@ -13,9 +18,12 @@ export class ClapMapper {
 
   static toPersistence(domainEntity: Clap): ClapEntity {
     const persistenceEntity = new ClapEntity();
-    if (domainEntity.id) {
-      persistenceEntity.id = domainEntity.id;
-    }
+    persistenceEntity.counter = domainEntity.counter;
+
+    persistenceEntity.user_id = domainEntity.userId;
+
+    persistenceEntity.article_id = domainEntity.articleId;
+
     persistenceEntity.created_at = domainEntity.createdAt;
     persistenceEntity.updated_at = domainEntity.updatedAt;
 

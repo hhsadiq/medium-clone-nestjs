@@ -1,6 +1,4 @@
 import { Clap } from '@src/claps/domain/clap';
-import { DeepPartial } from '@src/utils/types/deep-partial.type';
-import { NullableType } from '@src/utils/types/nullable.type';
 import { IPaginationOptions } from '@src/utils/types/pagination-options';
 
 export abstract class ClapAbstractRepository {
@@ -13,11 +11,4 @@ export abstract class ClapAbstractRepository {
   }: {
     paginationOptions: IPaginationOptions;
   }): Promise<Clap[]>;
-
-  abstract findById(id: Clap['id']): Promise<NullableType<Clap>>;
-
-  abstract update(
-    id: Clap['id'],
-    payload: DeepPartial<Clap>,
-  ): Promise<Clap | null>;
 }

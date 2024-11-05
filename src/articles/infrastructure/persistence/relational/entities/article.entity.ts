@@ -11,6 +11,7 @@ import {
   JoinTable,
 } from 'typeorm';
 
+import { ClapEntity } from '@src/claps/infrastructure/persistence/relational/entities/clap.entity';
 import { CommentEntity } from '@src/comments/infrastructure/persistence/relational/entities/comment.entity';
 import { TABLES } from '@src/common/constants';
 import { TagEntity } from '@src/tags/infrastructure/persistence/relational/entities/tag.entity';
@@ -51,6 +52,9 @@ export class ArticleEntity extends EntityRelationalHelper {
 
   @OneToMany(() => FavoriteArticleEntity, (favorite) => favorite.user)
   favorites: UserEntity[];
+
+  @OneToMany(() => ClapEntity, (clap) => clap.article)
+  claps: ClapEntity[];
 
   @ManyToMany(() => TagEntity)
   @JoinTable({

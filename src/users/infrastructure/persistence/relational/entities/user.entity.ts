@@ -17,6 +17,7 @@ import {
 import { ArticleEntity } from '@src/articles/infrastructure/persistence/relational/entities/article.entity';
 import { FavoriteArticleEntity } from '@src/articles/infrastructure/persistence/relational/entities/favorite-article.entity';
 import { AuthProvidersEnum } from '@src/auth/auth-providers.enum';
+import { ClapEntity } from '@src/claps/infrastructure/persistence/relational/entities/clap.entity';
 import { TABLES } from '@src/common/constants';
 import { FileEntity } from '@src/files/infrastructure/persistence/relational/entities/file.entity';
 import { RoleEntity } from '@src/roles/infrastructure/persistence/relational/entities/role.entity';
@@ -104,6 +105,9 @@ export class UserEntity extends EntityRelationalHelper {
 
   @OneToMany(() => UserFollowEntity, (follow) => follow.following)
   userFollowers: UserEntity[];
+
+  @OneToMany(() => ClapEntity, (clap) => clap.user)
+  claps: ClapEntity[];
 
   @CreateDateColumn()
   created_at: Date;

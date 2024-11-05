@@ -1,17 +1,7 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  UseGuards,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Param, UseGuards, Query } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBearerAuth,
-  ApiCreatedResponse,
   ApiOkResponse,
   ApiParam,
   ApiTags,
@@ -25,9 +15,7 @@ import { infinityPagination } from '@src/utils/infinity-pagination';
 
 import { ClapsService } from './claps.service';
 import { Clap } from './domain/clap';
-import { CreateClapDto } from './dto/create-clap.dto';
 import { FindAllClapsDto } from './dto/find-all-claps.dto';
-import { UpdateClapDto } from './dto/update-clap.dto';
 
 @ApiTags('Claps')
 @ApiBearerAuth()
@@ -38,14 +26,6 @@ import { UpdateClapDto } from './dto/update-clap.dto';
 })
 export class ClapsController {
   constructor(private readonly clapsService: ClapsService) {}
-
-  @Post()
-  @ApiCreatedResponse({
-    type: Clap,
-  })
-  create(@Body() createClapDto: CreateClapDto) {
-    return this.clapsService.create(createClapDto);
-  }
 
   @Get()
   @ApiOkResponse({
@@ -79,18 +59,5 @@ export class ClapsController {
   })
   findOne(@Param('id') id: string) {
     return this.clapsService.findOne(id);
-  }
-
-  @Patch(':id')
-  @ApiParam({
-    name: 'id',
-    type: String,
-    required: true,
-  })
-  @ApiOkResponse({
-    type: Clap,
-  })
-  update(@Param('id') id: string, @Body() updateClapDto: UpdateClapDto) {
-    return this.clapsService.update(id, updateClapDto);
   }
 }
