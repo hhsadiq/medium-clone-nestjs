@@ -3,6 +3,7 @@ import { diff, unique } from 'radash';
 import slugify from 'slugify';
 
 import { JwtPayloadType } from '@src/auth/strategies/types/jwt-payload.type';
+import { ClapRelationalRepository } from '@src/claps/infrastructure/persistence/relational/repositories/clap.repository';
 import { CommentsService } from '@src/comments/comments.service';
 import { Comment } from '@src/comments/domain/comment';
 import {
@@ -32,7 +33,6 @@ import { Article } from './domain/article';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { ArticleAbstractRepository } from './infrastructure/persistence/article.abstract.repository';
-import { ClapRelationalRepository } from './infrastructure/persistence/relational/repositories/clap.repository';
 
 @Injectable()
 export class ArticlesService {
@@ -41,13 +41,10 @@ export class ArticlesService {
     private readonly commentsService: CommentsService,
     private readonly tagsService: TagsService,
     private readonly dbHelperRepository: DatabaseHelperRepository,
-    private readonly genAiService: GenAiService,
     private readonly clapRepository: ClapRelationalRepository,
+    private readonly genAiService: GenAiService,
   ) {}
 
-  async countClapsForArticle(articleId: string): Promise<number> {
-    return await this.clapRepository.getTotalClaps(articleId);
-  }
   async create(
     createArticleDto: CreateArticleDto,
     userJwtPayload: JwtPayloadType,
@@ -147,7 +144,7 @@ export class ArticlesService {
 
     const articlesWithClaps = await Promise.all(
       articles.map(async (article) => {
-        const totalClaps = await this.countClapsForArticle(article.id);
+        const totalClaps = await this.clapRepository.getTotalClaps(article.id);
 
         return { ...article, totalClaps };
       }),
@@ -168,14 +165,20 @@ export class ArticlesService {
           limit: paginationOptions.limit,
         },
       });
-    return pagination(data, total, paginationOptions);
+
+    const articlesWithTotalClaps = await Promise.all(
+      data.map(async (article) => {
+        const totalClaps = await this.clapRepository.getTotalClaps(article.id);
+        return { ...article, totalClaps };
+      }),
+    );
+
+    return pagination(articlesWithTotalClaps, total, paginationOptions);
   }
 
   async findOne(id: Article['id']) {
     const article = await this.findAndValidate('id', id, true);
-
-    const totalClaps = await this.countClapsForArticle(id);
-
+    const totalClaps = await this.clapRepository.getTotalClaps(article.id);
     return { ...article, totalClaps };
   }
 
@@ -256,33 +259,9 @@ export class ArticlesService {
     if (!article) {
       throw NOT_FOUND('Article', { [field]: value });
     }
-    const totalClaps = await this.countClapsForArticle(article.id);
 
+    const totalClaps = await this.clapRepository.getTotalClaps(article.id);
     return { ...article, totalClaps };
-  }
-
-  async clapArticle(
-    id: Article['id'],
-    userJwtPayload: JwtPayloadType,
-  ): Promise<Article> {
-    await this.findAndValidate('id', id);
-
-    const userIdAsNumber =
-      typeof userJwtPayload.id === 'string'
-        ? parseInt(userJwtPayload.id, 10)
-        : userJwtPayload.id;
-
-    const clapPayload = {
-      articleId: id,
-      userId: userIdAsNumber,
-    };
-
-    await this.clapRepository.createOrIncrement(
-      clapPayload.articleId,
-      clapPayload.userId,
-    );
-
-    return this.findAndValidate('id', id, true);
   }
 
   async favoriteArticle(slug: string, user: User): Promise<string> {

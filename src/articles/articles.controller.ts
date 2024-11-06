@@ -274,19 +274,4 @@ export class ArticlesController {
       { page, limit },
     );
   }
-
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
-  @Post(':id/clap')
-  @ApiParam({
-    name: 'id',
-    type: String,
-    required: true,
-  })
-  @ApiCreatedResponse({
-    type: Article,
-  })
-  async clapArticle(@Param('id') id: string, @Request() request) {
-    return this.articlesService.clapArticle(id, request.user);
-  }
 }

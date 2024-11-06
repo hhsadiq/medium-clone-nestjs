@@ -9,11 +9,10 @@ import {
   Unique,
 } from 'typeorm';
 
+import { ArticleEntity } from '@src/articles/infrastructure/persistence/relational/entities/article.entity';
 import { TABLES } from '@src/common/constants';
 import { UserEntity } from '@src/users/infrastructure/persistence/relational/entities/user.entity';
 import { EntityRelationalHelper } from '@src/utils/relational-entity-helper';
-
-import { ArticleEntity } from './article.entity';
 
 @Entity({
   name: TABLES.articleClap,

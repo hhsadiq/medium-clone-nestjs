@@ -11,6 +11,7 @@ import {
   JoinTable,
 } from 'typeorm';
 
+import { ClapEntity } from '@src/claps/infrastructure/persistence/relational/entities/clap.entity';
 import { CommentEntity } from '@src/comments/infrastructure/persistence/relational/entities/comment.entity';
 import { TABLES } from '@src/common/constants';
 import { TagEntity } from '@src/tags/infrastructure/persistence/relational/entities/tag.entity';
@@ -19,7 +20,6 @@ import { EntityRelationalHelper } from '@src/utils/relational-entity-helper';
 import { NullableType } from '@src/utils/types/nullable.type';
 
 import { FavoriteArticleEntity } from './favorite-article.entity';
-import { ClapEntity } from './clap.entity';
 
 @Entity({
   name: TABLES.article,

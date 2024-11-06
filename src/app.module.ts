@@ -7,6 +7,8 @@ import { HeaderResolver } from 'nestjs-i18n';
 import { I18nModule } from 'nestjs-i18n/dist/i18n.module';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
+import { ClapsModule } from '@src/claps/claps.module';
+
 import { ArticlesModule } from './articles/articles.module';
 import { AuthModule } from './auth/auth.module';
 import authConfig from './auth/config/auth.config';
@@ -50,6 +52,7 @@ const infrastructureDatabaseModule = TypeOrmModule.forRootAsync({
     TagsModule,
     CommentsModule,
     ArticlesModule,
+    ClapsModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [

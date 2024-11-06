@@ -1,8 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+import { Article } from '@src/articles/domain/article';
 import { User } from '@src/users/domain/user';
-
-import { Article } from './article';
 
 export class Clap {
   @ApiProperty()

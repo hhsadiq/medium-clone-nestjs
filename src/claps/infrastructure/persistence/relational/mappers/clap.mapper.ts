@@ -1,8 +1,7 @@
-import { Clap } from '@src/articles/domain/clap';
-import { ClapEntity } from '@src/articles/infrastructure/persistence/relational/entities/clap.entity';
+import { ArticleMapper } from '@src/articles/infrastructure/persistence/relational/mappers/article.mapper';
+import { Clap } from '@src/claps/domain/clap';
+import { ClapEntity } from '@src/claps/infrastructure/persistence/relational/entities/clap.entity';
 import { UserMapper } from '@src/users/infrastructure/persistence/relational/mappers/user.mapper';
-
-import { ArticleMapper } from './article.mapper';
 
 export class ClapMapper {
   static toDomain(raw: ClapEntity): Clap {

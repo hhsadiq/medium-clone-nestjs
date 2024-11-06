@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { Clap } from '@src/articles/domain/clap';
-import { ClapEntity } from '@src/articles/infrastructure/persistence/relational/entities/clap.entity';
-import { ClapMapper } from '@src/articles/infrastructure/persistence/relational/mappers/clap.mapper';
+import { Clap } from '@src/claps/domain/clap';
+import { ClapEntity } from '@src/claps/infrastructure/persistence/relational/entities/clap.entity';
+import { ClapMapper } from '@src/claps/infrastructure/persistence/relational/mappers/clap.mapper';
 
 @Injectable()
 export class ClapRelationalRepository {
