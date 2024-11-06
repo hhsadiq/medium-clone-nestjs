@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
 import { JwtPayloadType } from '@src/auth/strategies/types/jwt-payload.type';
-import { IPaginationOptions } from '@src/utils/types/pagination-options';
 
 import { Clap } from './domain/clap';
 import { ClapAbstractRepository } from './infrastructure/persistence/clap.abstract.repository';
@@ -34,19 +33,6 @@ export class ClapsService {
     );
 
     return clap;
-  }
-
-  findAllWithPagination({
-    paginationOptions,
-  }: {
-    paginationOptions: IPaginationOptions;
-  }) {
-    return this.clapRepository.findAllWithPagination({
-      paginationOptions: {
-        page: paginationOptions.page,
-        limit: paginationOptions.limit,
-      },
-    });
   }
 
   findOne(articleId: Clap['articleId'], userId: Clap['userId']) {
