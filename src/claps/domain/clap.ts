@@ -5,11 +5,6 @@ import { User } from '@src/users/domain/user';
 
 export class Clap {
   @ApiProperty({
-    type: String,
-  })
-  id: string;
-
-  @ApiProperty({
     type: Number,
     example: 1,
   })

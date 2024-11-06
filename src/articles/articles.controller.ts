@@ -20,6 +20,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
+import { CreateClapPathParamDto } from '@src/articles/dto/create-clap-path-param.dto';
+import { Clap } from '@src/claps/domain/clap';
 import { Comment } from '@src/comments/domain/comment';
 import {
   InfinityPaginationResponse,
@@ -247,6 +249,22 @@ export class ArticlesController {
     const user = request.user;
     const result = await this.articlesService.unfavoriteArticle(slug, user);
     return { message: result };
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Post(':slug/clap')
+  @ApiParam({
+    name: 'slug',
+    type: String,
+    required: true,
+  })
+  @ApiCreatedResponse({
+    type: Clap,
+  })
+  async addClap(@Param() params: CreateClapPathParamDto, @Request() request) {
+    const { slug } = params;
+    return await this.articlesService.addClap(slug, request.user);
   }
 
   @ApiBearerAuth()

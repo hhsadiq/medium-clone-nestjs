@@ -3,6 +3,7 @@ import { diff, unique } from 'radash';
 import slugify from 'slugify';
 
 import { JwtPayloadType } from '@src/auth/strategies/types/jwt-payload.type';
+import { ClapsService } from '@src/claps/claps.service';
 import { CommentsService } from '@src/comments/comments.service';
 import { Comment } from '@src/comments/domain/comment';
 import {
@@ -37,6 +38,7 @@ import { ArticleAbstractRepository } from './infrastructure/persistence/article.
 export class ArticlesService {
   constructor(
     private readonly articleRepository: ArticleAbstractRepository,
+    private readonly clapsService: ClapsService,
     private readonly commentsService: CommentsService,
     private readonly tagsService: TagsService,
     private readonly dbHelperRepository: DatabaseHelperRepository,
@@ -281,6 +283,15 @@ export class ArticlesService {
 
     await this.articleRepository.removeFavorite(existingFavorite.id);
     return ARTICLE_UNFAVORITE_SUCCESS;
+  }
+
+  async addClap(slug: Article['slug'], userJwtPayload: JwtPayloadType) {
+    const article = await this.findAndValidate('slug', slug);
+
+    return await this.clapsService.incrementCounter(
+      article.id,
+      userJwtPayload.id,
+    );
   }
 
   getFeedArticles({

@@ -20,7 +20,7 @@ export class ClapMapper {
     const persistenceEntity = new ClapEntity();
     persistenceEntity.counter = domainEntity.counter;
 
-    persistenceEntity.user_id = domainEntity.userId;
+    persistenceEntity.user_id = +domainEntity.userId;
 
     persistenceEntity.article_id = domainEntity.articleId;
 
