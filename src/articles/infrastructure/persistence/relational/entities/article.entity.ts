@@ -68,6 +68,12 @@ export class ArticleEntity extends EntityRelationalHelper {
   })
   tagList?: NullableType<TagEntity[]>;
 
+  @Column({
+    type: 'int',
+    default: 0,
+  })
+  clap_count: number;
+
   // @custom-inject-point
   @CreateDateColumn()
   created_at: Date;

@@ -288,10 +288,9 @@ export class ArticlesService {
   async addClap(slug: Article['slug'], userJwtPayload: JwtPayloadType) {
     const article = await this.findAndValidate('slug', slug);
 
-    return await this.clapsService.incrementCounter(
-      article.id,
-      userJwtPayload.id,
-    );
+    await this.clapsService.incrementCounter(article.id, userJwtPayload.id);
+
+    return this.articleRepository.updateClapCount(article);
   }
 
   getFeedArticles({

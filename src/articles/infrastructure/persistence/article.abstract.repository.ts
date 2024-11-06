@@ -39,6 +39,8 @@ export abstract class ArticleAbstractRepository {
     >,
   ): Promise<Article>;
 
+  abstract updateClapCount(entity: Article): Promise<Article>;
+
   abstract findPaginatedArticlesWithUserId({
     paginationOptions,
     userId,

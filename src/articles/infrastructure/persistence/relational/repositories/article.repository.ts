@@ -142,6 +142,20 @@ export class ArticleRelationalRepository implements ArticleAbstractRepository {
     return ArticleMapper.toDomain(updatedEntity);
   }
 
+  async updateClapCount(entity: Article): Promise<Article> {
+    const clapsCount = await this.articleRepository
+      .createQueryBuilder('article')
+      .leftJoin('article.claps', 'clap')
+      .select('SUM(clap.counter)', 'totalClaps')
+      .where('article.id = :articleId', { articleId: entity.id })
+      .getRawOne();
+
+    entity.clapCount = clapsCount?.totalClaps || 0;
+    const persistenceModel = ArticleMapper.toPersistence(entity);
+    const article = await this.articleRepository.save(persistenceModel);
+    return ArticleMapper.toDomain(article);
+  }
+
   async remove(id: Article['id']): Promise<void> {
     await this.articleRepository.delete(id);
   }

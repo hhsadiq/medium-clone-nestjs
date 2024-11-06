@@ -10,6 +10,7 @@ import { UserMapper } from '@src/users/infrastructure/persistence/relational/map
 export class ArticleMapper {
   static toDomain(raw: ArticleEntity): Article {
     const domainEntity = new Article();
+    domainEntity.clapCount = raw.clap_count;
     domainEntity.body = raw.body;
     domainEntity.description = raw.description;
     domainEntity.title = raw.title;
@@ -32,6 +33,7 @@ export class ArticleMapper {
 
   static toPersistence(domainEntity: Article): ArticleEntity {
     const persistenceEntity = new ArticleEntity();
+    persistenceEntity.clap_count = domainEntity.clapCount;
     persistenceEntity.body = domainEntity.body;
     persistenceEntity.description = domainEntity.description;
     persistenceEntity.title = domainEntity.title;
