@@ -63,7 +63,7 @@ import { FindAll<%= h.inflection.transform(name, ['pluralize']) %>Dto<%= version
 @ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
 @Controller({
-  path: '<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/<%= version.toUpperCase() %>',
+  path: '<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>',
   version: '<%= version.replace('v', '') %>',
 })
 export class <%= h.inflection.transform(name, ['pluralize']) %>Controller<%= version.toUpperCase() %> {
