@@ -9,6 +9,7 @@
     - [For relational database (PostgreSQL + TypeORM)](#for-relational-database-postgresql--typeorm)
     - [Property for relational database (PostgreSQL + TypeORM)](#property-for-relational-database-postgresql--typeorm)
     - [Generate a basic structure for raw queries](#generate-a-basic-structure-for-raw-queries)
+    - [Generate a Version of a Resource](#generate-a-version-of-a-resource)
   - [FAQ](#faq)
     - [Error: Unable to connect to the newly created relational entity](#error-unable-to-connect-to-the-newly-created-relational-entity)
     - [Can I create foreign key properties using the add:property command?](#can-i-create-foreign-key-properties-using-the-addproperty-command)
@@ -97,6 +98,38 @@ This command will initiate a terminal prompt to guide you in generating a raw qu
 2. **Name**: You will be asked to provide a name for the query (e.g., 'ListingQuery'). This name is also required, and validation ensures that it is not empty.
 
 Once you complete the prompt, the necessary query files will be generated, ready for customization as needed.
+
+### Generate a Version of a Resource
+
+```bash
+npm run generate:version
+```
+
+This command helps you create a new version of an existing resource by generating a folder and files with the version number reflected in both the filenames and class names. For example, if you are versioning the `User` resource and selecting `v2`, a `v2` folder will be created within the resource directory. The filenames, class names, and related code will reflect this new version (class_name: `UserV2`, file_name `user.v2.controller.ts`, etc.).
+
+This is useful when you want to extend or modify the resource functionality without affecting the original version.
+
+You will be prompted with the following questions:
+
+1. **For which existing entity are you creating a new version? (e.g. 'User')**  
+   This prompt will ask you to specify the existing entity or resource you are versioning. The entity name must be entered (e.g., 'User').
+
+2. **Which version are you implementing? (e.g. v2, v3)**  
+   Here, you will provide the version number for the new version of the resource you are creating (e.g., `v2`, `v3`). This version number will be reflected in both the folder structure and the file/class names.
+
+3. **Do you want to add test cases and mock data?**  
+   This confirmation will ask whether you would like to generate test cases and mock data along with the resource. If you choose "Yes," test cases and mock data will be generated as part of the new version of the resource.
+
+4. **Select the functionalities you want to include:**  
+   You will be asked to select the functionalities (CRUD operations) to include in the new version of the resource. The available options are:
+
+   - Create
+   - Find All
+   - Find One
+   - Update
+   - Delete
+
+   Use the arrow keys to navigate and the spacebar to select multiple options. Press the Enter key to move to the next step.
 
 ## FAQ
 
