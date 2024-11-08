@@ -28,7 +28,7 @@ export class ClapsController {
   @ApiCreatedResponse({
     type: Article,
   })
-  async clapArticle(@Param('id') id: string, @Request() request) {
+  clapArticle(@Param('id') id: string, @Request() request) {
     return this.clapsService.clapArticle(id, request.user);
   }
 }
