@@ -3,7 +3,6 @@ import { diff, unique } from 'radash';
 import slugify from 'slugify';
 
 import { JwtPayloadType } from '@src/auth/strategies/types/jwt-payload.type';
-import { ClapRelationalRepository } from '@src/claps/infrastructure/persistence/relational/repositories/clap.repository';
 import { CommentsService } from '@src/comments/comments.service';
 import { Comment } from '@src/comments/domain/comment';
 import {
@@ -41,7 +40,6 @@ export class ArticlesService {
     private readonly commentsService: CommentsService,
     private readonly tagsService: TagsService,
     private readonly dbHelperRepository: DatabaseHelperRepository,
-    private readonly clapRepository: ClapRelationalRepository,
     private readonly genAiService: GenAiService,
   ) {}
 
@@ -124,7 +122,7 @@ export class ArticlesService {
     const randomValues = crypto.getRandomValues(new Uint8Array(length));
 
     for (let i = 0; i < length; i++) {
-      id += charset[randomValues[i] & 63]; // Ensure the index is twithin the range 0-63
+      id += charset[randomValues[i] & 63];
     }
 
     return id;
@@ -142,15 +140,7 @@ export class ArticlesService {
       },
     });
 
-    const articlesWithClaps = await Promise.all(
-      articles.map(async (article) => {
-        const totalClaps = await this.clapRepository.getTotalClaps(article.id);
-
-        return { ...article, totalClaps };
-      }),
-    );
-
-    return articlesWithClaps;
+    return articles;
   }
 
   async findAllWithPaginationStandard({
@@ -165,21 +155,11 @@ export class ArticlesService {
           limit: paginationOptions.limit,
         },
       });
-
-    const articlesWithTotalClaps = await Promise.all(
-      data.map(async (article) => {
-        const totalClaps = await this.clapRepository.getTotalClaps(article.id);
-        return { ...article, totalClaps };
-      }),
-    );
-
-    return pagination(articlesWithTotalClaps, total, paginationOptions);
+    return pagination(data, total, paginationOptions);
   }
 
-  async findOne(id: Article['id']) {
-    const article = await this.findAndValidate('id', id, true);
-    const totalClaps = await this.clapRepository.getTotalClaps(article.id);
-    return { ...article, totalClaps };
+  findOne(id: Article['id']) {
+    return this.findAndValidate('id', id, true);
   }
 
   async update(id: Article['id'], updateArticleDto: UpdateArticleDto) {
@@ -260,8 +240,7 @@ export class ArticlesService {
       throw NOT_FOUND('Article', { [field]: value });
     }
 
-    const totalClaps = await this.clapRepository.getTotalClaps(article.id);
-    return { ...article, totalClaps };
+    return article;
   }
 
   async favoriteArticle(slug: string, user: User): Promise<string> {

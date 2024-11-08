@@ -68,6 +68,9 @@ export class ArticleEntity extends EntityRelationalHelper {
   @OneToMany(() => ClapEntity, (clap) => clap.article)
   claps: ClapEntity[];
 
+  @Column({ type: 'integer', default: 0 })
+  totalClaps: number;
+
   // @custom-inject-point
   @CreateDateColumn()
   created_at: Date;

@@ -11,7 +11,6 @@ import { FavoriteArticleEntity } from '@src/articles/infrastructure/persistence/
 import { ArticleMapper } from '@src/articles/infrastructure/persistence/relational/mappers/article.mapper';
 import { FavoriteArticleMapper } from '@src/articles/infrastructure/persistence/relational/mappers/favorite.article.mapper';
 import { User } from '@src/users/domain/user';
-import { UserFollowEntity as UserFollowEntity } from '@src/users/infrastructure/persistence/relational/entities/user-follow.entity';
 import { NullableType } from '@src/utils/types/nullable.type';
 import { IPaginationOptions } from '@src/utils/types/pagination-options';
 
@@ -22,8 +21,6 @@ export class ArticleRelationalRepository implements ArticleAbstractRepository {
     private readonly articleRepository: Repository<ArticleEntity>,
     @InjectRepository(FavoriteArticleEntity)
     private readonly favoriteArticleRepository: Repository<FavoriteArticleEntity>,
-    @InjectRepository(UserFollowEntity)
-    private readonly userFollowRepository: Repository<UserFollowEntity>,
   ) {}
 
   async create(data: ArticleDTOWithTagDomains): Promise<Article> {

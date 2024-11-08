@@ -15,6 +15,7 @@ export class ArticleMapper {
     domainEntity.title = raw.title;
     domainEntity.slug = raw.slug;
     domainEntity.id = raw.id;
+    domainEntity.totalClaps = raw.totalClaps;
     if (raw.author) {
       domainEntity.author = UserMapper.toDomain(raw.author);
     }
@@ -23,13 +24,6 @@ export class ArticleMapper {
         (tagEntity: TagEntity) => tagEntity.name,
       );
     }
-    if (raw.claps) {
-      domainEntity.totalClaps = raw.claps.reduce(
-        (sum, clap) => sum + clap.counter,
-        0,
-      );
-    }
-
     domainEntity.createdAt = raw.created_at;
     domainEntity.updatedAt = raw.updated_at;
 
@@ -40,6 +34,7 @@ export class ArticleMapper {
     const persistenceEntity = new ArticleEntity();
     persistenceEntity.body = domainEntity.body;
     persistenceEntity.description = domainEntity.description;
+    persistenceEntity.totalClaps = domainEntity.totalClaps || 0;
     persistenceEntity.title = domainEntity.title;
     persistenceEntity.slug = domainEntity.slug;
     if (domainEntity.id) {
@@ -63,6 +58,7 @@ export class ArticleMapper {
     persistenceEntity.description = domainEntity.description;
     persistenceEntity.title = domainEntity.title;
     persistenceEntity.slug = domainEntity.slug;
+    persistenceEntity.totalClaps = domainEntity.totalClaps || 0;
 
     if (isArray(domainEntity.tagList) && !isEmpty(domainEntity.tagList)) {
       persistenceEntity.tagList = domainEntity.tagList.map((domainEntity) =>

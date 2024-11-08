@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { ArticleEntity } from '@src/articles/infrastructure/persistence/relational/entities/article.entity';
 import { Clap } from '@src/claps/domain/clap';
 import { ClapEntity } from '@src/claps/infrastructure/persistence/relational/entities/clap.entity';
 import { ClapMapper } from '@src/claps/infrastructure/persistence/relational/mappers/clap.mapper';
@@ -14,34 +15,49 @@ export class ClapRelationalRepository {
   ) {}
 
   async createOrIncrement(articleId: string, userId: number): Promise<Clap> {
-    const existingClap = await this.clapRepository.findOne({
-      where: { article_id: articleId, user_id: userId },
-    });
+    return await this.clapRepository.manager.transaction(
+      async (transactionalEntityManager) => {
+        const existingClap = await transactionalEntityManager.findOne(
+          ClapEntity,
+          {
+            where: { article_id: articleId, user_id: userId },
+          },
+        );
 
-    const counterIncVal = 1;
-    if (existingClap) {
-      existingClap.counter += counterIncVal;
-      const updatedClap = await this.clapRepository.save(existingClap);
-      return ClapMapper.toDomain(updatedClap);
-    }
+        const counterIncVal = 1;
+        let clap: ClapEntity;
 
-    const newClap = this.clapRepository.create({
-      article_id: articleId,
-      user_id: userId,
-      counter: counterIncVal,
-    });
+        if (existingClap) {
+          existingClap.counter += counterIncVal;
+          clap = await transactionalEntityManager.save(
+            ClapEntity,
+            existingClap,
+          );
+        } else {
+          const newClap = transactionalEntityManager.create(ClapEntity, {
+            article_id: articleId,
+            user_id: userId,
+            counter: counterIncVal,
+          });
+          clap = await transactionalEntityManager.save(ClapEntity, newClap);
+        }
 
-    const savedClap = await this.clapRepository.save(newClap);
-    return ClapMapper.toDomain(savedClap);
-  }
+        const totalClaps = await transactionalEntityManager
+          .createQueryBuilder(ClapEntity, 'clap')
+          .select('SUM(clap.counter)', 'total')
+          .where('clap.article_id = :articleId', { articleId })
+          .getRawOne()
+          .then((result) => parseInt(result.total) || 0);
 
-  async getTotalClaps(articleId: string): Promise<number> {
-    const result = await this.clapRepository
-      .createQueryBuilder('clap')
-      .select('SUM(clap.counter)', 'total')
-      .where('clap.article_id = :articleId', { articleId })
-      .getRawOne();
+        await transactionalEntityManager
+          .createQueryBuilder()
+          .update(ArticleEntity)
+          .set({ totalClaps })
+          .where('id = :articleId', { articleId })
+          .execute();
 
-    return result.total || 0;
+        return ClapMapper.toDomain(clap);
+      },
+    );
   }
 }
