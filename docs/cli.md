@@ -107,7 +107,11 @@ npm run generate:version
 
 This command helps you create a new version of an existing resource by generating a folder and files with the version number reflected in both the filenames and class names. For example, if you are versioning the `User` resource and selecting `v2`, a `v2` folder will be created within the resource directory. The filenames, class names, and related code will reflect this new version (class_name: `UserV2`, file_name `user.v2.controller.ts`, etc.).
 
+After you create a new version, the CLI will copy directories such as domains, entities, and mappers from the previous version of the resource to the new version's directory. All files within these directories, including the main module file and any dependent files (e.g., `user.ts`, `user-follow.ts`), will have their filenames and class names updated to reflect the new version number (e.g., `user.v2.ts`, `user-follow.v2.ts`, `UserV2`, `UserFollowV2`).
+
 This is useful when you want to extend or modify the resource functionality without affecting the original version.
+
+**Note**: Be aware that changing filenames and class names in the domains, entities, and mappers directories may lead to import and class name errors in your code in the newer version, as code in the files may still reference the previous version. Check each file and update imports and references to match the new version accordingly.
 
 You will be prompted with the following questions:
 
