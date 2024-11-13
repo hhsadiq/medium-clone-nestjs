@@ -1,19 +1,19 @@
 ---
-to: src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/<%= version%>/infrastructure/persistence/relational/repositories/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.<%= version%>.repository.ts
+to: src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/<%= version%>/infrastructure/persistence/relational/repositories/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.repository.<%= version%>.ts
 ---
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { <%= name %>Entity<%= version.toUpperCase() %> } from '../entities/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.<%= version%>.entity';
+import { <%= name %>Entity<%= version.toUpperCase() %> } from '../entities/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.entity.<%= version%>';
 <% if (functionalities.includes('findOne')) { %>
 import { NullableType } from '@src/utils/types/nullable.type';
 <% } %>
 <% if (functionalities.includes('update') || functionalities.includes('create') || functionalities.includes('findOne') || functionalities.includes('findAll') || functionalities.includes('delete')) { %>
 import { <%= name %><%= version.toUpperCase() %> } from '../../../../domain/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.<%= version %>';
 <% } %>
-import { <%= name %>AbstractRepository<%= version.toUpperCase() %> } from '../../<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.abstract.<%= version%>.repository';
+import { <%= name %>AbstractRepository<%= version.toUpperCase() %> } from '../../<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.abstract.repository.<%= version%>';
 <% if (functionalities.includes('create') || functionalities.includes('findAll') || functionalities.includes('findOne') || functionalities.includes('update')) { %>
-import { <%= name %>Mapper<%= version.toUpperCase() %> } from '../mappers/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.<%= version %>.mapper';
+import { <%= name %>Mapper<%= version.toUpperCase() %> } from '../mappers/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.mapper.<%= version %>';
 <% } %>
 <% if (functionalities.includes('findAll')) { %>
 import { IPaginationOptions } from '../../../../../../utils/types/pagination-options';

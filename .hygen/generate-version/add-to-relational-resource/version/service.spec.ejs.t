@@ -1,5 +1,5 @@
 ---
-to: "<%= isAddTestCase ? `src/${h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize'])}/${version}/${h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize'])}.${version}.service.spec.ts` : null %>"
+to: "<%= isAddTestCase ? `src/${h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize'])}/${version}/${h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize'])}.service.spec.${version}.ts` : null %>"
 ---
 import { Test, TestingModule } from '@nestjs/testing';
 <% if (functionalities.includes('update') || functionalities.includes('create') || functionalities.includes('findOne') || functionalities.includes('findAll')) { %>
@@ -16,10 +16,10 @@ import {
   <% if (functionalities.includes('update')) { %>
   mockUpdate<%= name %>Dto<%= version.toUpperCase() %>,
   <% } %>
-} from './__mock__/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.<%= version %>.mock';
+} from './__mock__/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.mock.<%= version %>';
 <% } %>
-import { <%= h.inflection.transform(name, ['pluralize']) %>Service<%= version.toUpperCase() %> } from './<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>.<%= version %>.service';
-import { <%= name %>AbstractRepository<%= version.toUpperCase() %> } from './infrastructure/persistence/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.abstract.<%= version %>.repository';
+import { <%= h.inflection.transform(name, ['pluralize']) %>Service<%= version.toUpperCase() %> } from './<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>.service.<%= version %>';
+import { <%= name %>AbstractRepository<%= version.toUpperCase() %> } from './infrastructure/persistence/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.abstract.repository.<%= version %>';
 
 describe('<%= h.inflection.transform(name, ['pluralize']) %>Service<%= version.toUpperCase() %>', () => {
   let service: <%= h.inflection.transform(name, ['pluralize']) %>Service<%= version.toUpperCase() %>;

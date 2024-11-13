@@ -1,5 +1,5 @@
 ---
-to: src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/<%= version%>/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>.<%= version%>.controller.ts
+to: src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/<%= version%>/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>.controller.<%= version%>.ts
 ---
 import {
   Controller,
@@ -39,12 +39,12 @@ import {
   <% } %>
   ApiTags,
 } from '@nestjs/swagger';
-import { <%= h.inflection.transform(name, ['pluralize']) %>Service<%= version.toUpperCase() %> } from './<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>.<%= version%>.service';
+import { <%= h.inflection.transform(name, ['pluralize']) %>Service<%= version.toUpperCase() %> } from './<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>.service.<%= version%>';
 <% if (functionalities.includes('create')) { %>
-import { Create<%= name %>Dto<%= version.toUpperCase() %> } from './dto/create-<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.<%= version%>.dto';
+import { Create<%= name %>Dto<%= version.toUpperCase() %> } from './dto/create-<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.dto.<%= version%>';
 <% } %>
 <% if (functionalities.includes('update')) { %>
-import { Update<%= name %>Dto<%= version.toUpperCase() %> } from './dto/update-<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.<%= version%>.dto';
+import { Update<%= name %>Dto<%= version.toUpperCase() %> } from './dto/update-<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.dto.<%= version%>';
 <% } %>
 <% if (functionalities.includes('create') || functionalities.includes('update') || functionalities.includes('findAll')) { %>
 import { <%= name %><%= version.toUpperCase() %> } from './domain/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.<%= version%>';
@@ -56,7 +56,7 @@ import {
   InfinityPaginationResponseDto,
 } from '../../utils/dto/infinity-pagination-response.dto';
 import { infinityPagination } from '../../utils/infinity-pagination';
-import { FindAll<%= h.inflection.transform(name, ['pluralize']) %>Dto<%= version.toUpperCase() %> } from './dto/find-all-<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>.<%= version%>.dto';
+import { FindAll<%= h.inflection.transform(name, ['pluralize']) %>Dto<%= version.toUpperCase() %> } from './dto/find-all-<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>.dto.<%= version%>';
 <% } %>
 
 @ApiTags('<%= h.inflection.transform(name, ['pluralize', 'humanize']) %><%= version.toUpperCase() %>')

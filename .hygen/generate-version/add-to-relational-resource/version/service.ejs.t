@@ -1,17 +1,17 @@
 ---
-to: src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/<%= version%>/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>.<%= version%>.service.ts
+to: src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/<%= version%>/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>.service.<%= version%>.ts
 ---
 import { Injectable } from '@nestjs/common';
 <% if (functionalities.includes('create')) { %>
-import { Create<%= name %>Dto<%= version.toUpperCase() %> } from './dto/create-<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.<%= version%>.dto';
+import { Create<%= name %>Dto<%= version.toUpperCase() %> } from './dto/create-<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.dto.<%= version%>';
 <% } %>
 <% if (functionalities.includes('update')) { %>
-import { Update<%= name %>Dto<%= version.toUpperCase() %> } from './dto/update-<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.<%= version%>.dto';
+import { Update<%= name %>Dto<%= version.toUpperCase() %> } from './dto/update-<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.dto.<%= version%>';
 <% } %>
 <% if (functionalities.includes('findAll')) { %>
 import { IPaginationOptions } from '../../utils/types/pagination-options';
 <% } %>
-import { <%= name %>AbstractRepository<%= version.toUpperCase() %> } from './infrastructure/persistence/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.abstract.<%= version%>.repository';
+import { <%= name %>AbstractRepository<%= version.toUpperCase() %> } from './infrastructure/persistence/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.abstract.repository.<%= version%>';
 <% if (functionalities.includes('findOne') || functionalities.includes('update') || functionalities.includes('delete')) { %>
 import { <%= name %><%= version.toUpperCase() %> } from './domain/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.<%= version%>';
 <% } %>
