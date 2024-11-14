@@ -10,6 +10,7 @@
     - [Property for relational database (PostgreSQL + TypeORM)](#property-for-relational-database-postgresql--typeorm)
     - [Generate a basic structure for raw queries](#generate-a-basic-structure-for-raw-queries)
     - [Generate a Version of a Resource](#generate-a-version-of-a-resource)
+      - [Critical Use Cases for New Modules and Dependencies](#critical-use-cases-for-new-modules-and-dependencies)
   - [FAQ](#faq)
     - [Error: Unable to connect to the newly created relational entity](#error-unable-to-connect-to-the-newly-created-relational-entity)
     - [Can I create foreign key properties using the add:property command?](#can-i-create-foreign-key-properties-using-the-addproperty-command)
@@ -134,6 +135,20 @@ You will be prompted with the following questions:
    - Delete
 
    Use the arrow keys to navigate and the spacebar to select multiple options. Press the Enter key to move to the next step.
+
+#### Critical Use Cases for New Modules and Dependencies
+
+1. **Starting a New Module at the Initial Version:**
+
+   When implementing a new feature, create a new module starting from its initial version (v1), even if other existing modules have higher versions (e.g., v3, v4). This establishes a clear versioning baseline for the new module.
+
+2. **Using the Latest Version for Dependencies:**
+
+   If the new feature’s initial version depends on another module, it should reference the latest version of that module.
+
+3. **Example:**
+
+   For a new `restaurant` feature, create a `restaurant` module starting at version `v1`. If this module depends on the user module, which is currently at version `v4`, the `restaurant` module will reference and interact with version `v4` of the `user` module.
 
 ## FAQ
 

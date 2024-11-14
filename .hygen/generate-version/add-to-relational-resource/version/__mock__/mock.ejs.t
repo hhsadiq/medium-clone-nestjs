@@ -8,7 +8,7 @@ import { IPaginationOptions } from "@src/utils/types/pagination-options";
 import { Create<%= name %>Dto<%= version.toUpperCase() %> } from '@src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/<%= version %>/dto/create-<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.dto.<%= version %>';
 <% } %>
 <% if (functionalities.includes('update')) { %>
-import { Update<%= name %>Dto<%= version.toUpperCase() %> } from '@src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/<%= version %>/dto/update-<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.<%= version %>.dto';
+import { Update<%= name %>Dto<%= version.toUpperCase() %> } from '@src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/<%= version %>/dto/update-<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.dto.<%= version %>';
 <% } %>
 import { <%= name %><%= version.toUpperCase() %> } from '@src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/<%= version %>/domain/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.<%= version %>';
 // __mock__/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.mock.ts
