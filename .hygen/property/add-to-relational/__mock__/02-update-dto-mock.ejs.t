@@ -1,6 +1,6 @@
 ---
 inject: true
-to: src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/__mock__/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.mock.ts
+to: "<%= version === 'v1' ? `src/${h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize'])}/__mock__/${h.inflection.transform(name, ['underscore', 'dasherize'])}.mock.ts` : `src/${h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize'])}/${version}/__mock__/${h.inflection.transform(name, ['underscore', 'dasherize'])}.mock.${version}.ts` %>"
 before: "// provide necessary fields here @update-dto"
 ---
 <% if (isAddToDto) { -%>
