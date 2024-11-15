@@ -1,6 +1,18 @@
 module.exports = [
   {
     type: 'input',
+    name: 'entity',
+    message: "Entity (e.g. 'Article')",
+    validate: (input) => {
+      if (!input.trim()) {
+        return 'Entity name is required';
+      }
+      return true;
+    },
+    format: (input) => input.trim(),
+  },
+  {
+    type: 'input',
     name: 'version',
     message:
       'Enter the API version of resource in which you want to insert property (e.g. "v1", "v2"):',
@@ -11,18 +23,6 @@ module.exports = [
       return true;
     },
     format: (version) => version.trim(),
-  },
-  {
-    type: 'input',
-    name: 'entity',
-    message: "Entity (e.g. 'Article')",
-    validate: (input) => {
-      if (!input.trim()) {
-        return 'Entity name is required';
-      }
-      return true;
-    },
-    format: (input) => input.trim(),
   },
   {
     type: 'input',

@@ -7,9 +7,9 @@
 - [Command Line Interface (CLI)](#command-line-interface-cli)
   - [Generate resource](#generate-resource)
     - [For relational database (PostgreSQL + TypeORM)](#for-relational-database-postgresql--typeorm)
-    - [Property for relational database (PostgreSQL + TypeORM)](#property-for-relational-database-postgresql--typeorm)
-    - [Generate a basic structure for raw queries](#generate-a-basic-structure-for-raw-queries)
-    - [Generate a Version of a Resource](#generate-a-version-of-a-resource)
+    - [Add property to a specific resource's version (PostgreSQL + TypeORM)](#add-property-to-a-specific-resources-version-postgresql--typeorm)
+    - [Generate a basic structure for raw queries in a resource's specific version](#generate-a-basic-structure-for-raw-queries-in-a-resources-specific-version)
+    - [Generate a new version of a Resource](#generate-a-new-version-of-a-resource)
       - [Critical Use Cases for New Modules and Dependencies](#critical-use-cases-for-new-modules-and-dependencies)
   - [FAQ](#faq)
     - [Error: Unable to connect to the newly created relational entity](#error-unable-to-connect-to-the-newly-created-relational-entity)
@@ -51,7 +51,7 @@ This command will trigger a terminal prompt with the following options:
 
    If you choose "Yes", test case structure and mock data for the resource will also be generated along with the selected functionalities.
 
-### Property for relational database (PostgreSQL + TypeORM)
+### Add property to a specific resource's version (PostgreSQL + TypeORM)
 
 ```bash
 npm run add:property
@@ -61,11 +61,13 @@ This command will initiate a terminal prompt to help you add a new property to a
 
 1. **Entity name**: You will be asked to enter the name of the entity (e.g., 'User') for which you want to add the property. This field is required, and the input will be validated to ensure it's not empty.
 
-2. **Property name**: You will be asked to provide the property name in snake case (e.g., 'first_name'). This field is also required, and the input will be validated to ensure it's not empty.
+2. **Version**: You will be asked to provide the version (e.g., 'v1', 'v2') of a resource in which you want to add the new property
 
-3. **Is this property optional?:** You will be prompted with a confirmation asking whether the property is optional. If you select "Yes", the property will be marked as optional in the schema.
+3. **Property name**: You will be asked to provide the property name in snake case (e.g., 'first_name'). This field is also required, and the input will be validated to ensure it's not empty.
 
-4. **Type of the property**: You will be asked to choose a data type for the default property from the following list:
+4. **Is this property optional?:** You will be prompted with a confirmation asking whether the property is optional. If you select "Yes", the property will be marked as optional in the schema.
+
+5. **Type of the property**: You will be asked to choose a data type for the default property from the following list:
 
    1. varchar
    2. text
@@ -80,13 +82,13 @@ This command will initiate a terminal prompt to help you add a new property to a
    11. json
    12. custom **(If you choose custom, you will be prompted to manually enter the custom type.)**
 
-5. **Add to DTO?**: You will be prompted with another confirmation asking whether the property should be added to the DTO (Data Transfer Object). If you select "Yes", the system will include the new property in the DTO.
+6. **Add to DTO?**: You will be prompted with another confirmation asking whether the property should be added to the DTO (Data Transfer Object). If you select "Yes", the system will include the new property in the DTO.
 
-6. **Property Example**: You will be asked to provide the property example(eg:test@gmail.com). This field is also required, and the input will be validated to ensure it's not empty.
+7. **Property Example**: You will be asked to provide the property example(eg:test@gmail.com). This field is also required, and the input will be validated to ensure it's not empty.
 
 After the property is created, please check the DTO files and add the relevant imports. Otherwise, the file will have errors.
 
-### Generate a basic structure for raw queries
+### Generate a basic structure for raw queries in a resource's specific version
 
 ```bash
 npm run generate:query
@@ -94,13 +96,15 @@ npm run generate:query
 
 This command will initiate a terminal prompt to guide you in generating a raw query for the desired entity. The prompt includes the following questions:
 
-1. **Entity**: You will be asked to provide the entity name (e.g., 'Article') for which the query is being created. This field is required, and the system will validate that the input is not empty.
+1. **Entity**: You will be asked to provide the entity name (e.g., 'Article') for which the raw query is being created. This field is required, and the system will validate that the input is not empty.
 
-2. **Name**: You will be asked to provide a name for the query (e.g., 'ListingQuery'). This name is also required, and validation ensures that it is not empty.
+2. **Version**: You will be asked to provide the version (e.g., 'v1', 'v2') of a resource for which you want to create the new raw query structure
+
+3. **Name**: You will be asked to provide a name for the query (e.g., 'ListingQuery'). This name is also required, and validation ensures that it is not empty.
 
 Once you complete the prompt, the necessary query files will be generated, ready for customization as needed.
 
-### Generate a Version of a Resource
+### Generate a new version of a Resource
 
 ```bash
 npm run generate:version
