@@ -1,6 +1,6 @@
 ---
 inject: true
-to: src/<%= h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) %>/domain/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.ts
+to: "<%= version === 'v1' ? 'src/' + h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) + '/domain/' + h.inflection.transform(name, ['underscore', 'dasherize']) + '.ts' : 'src/' + h.inflection.transform(name, ['pluralize', 'underscore', 'dasherize']) + '/' + version + '/domain/' + h.inflection.transform(name, ['underscore', 'dasherize']) + '.' + version + '.ts' %>"
 after: "export class"
 ---
 

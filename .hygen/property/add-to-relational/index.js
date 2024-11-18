@@ -14,7 +14,22 @@ module.exports = {
       format: (input) => input.trim(),
     });
 
-    // Step 2: Ask for property name
+    // Step 2: Ask for Api version
+    const { version } = await prompter.prompt({
+      type: 'input',
+      name: 'version',
+      message:
+        'Enter the API version of resource in which you want to insert property (e.g. "v1", "v2"):',
+      validate: (version) => {
+        if (!version.trim()) {
+          return 'API version is required';
+        }
+        return true;
+      },
+      format: (version) => version.trim(),
+    });
+
+    // Step 3: Ask for property name
     const { property } = await prompter.prompt({
       type: 'input',
       name: 'property',
@@ -28,7 +43,7 @@ module.exports = {
       format: (input) => input.trim(),
     });
 
-    // Step 3: Ask if the property is optional
+    // Step 4: Ask if the property is optional
     const { isOptional } = await prompter.prompt({
       type: 'confirm',
       name: 'isOptional',
@@ -36,7 +51,7 @@ module.exports = {
       initial: false,
     });
 
-    // Step 4: Ask for type
+    // Step 5: Ask for type
     const { type } = await prompter.prompt({
       type: 'select',
       name: 'type',
@@ -75,7 +90,7 @@ module.exports = {
       customType = customTypeInput;
     }
 
-    // Step 2: Ask for property example
+    // Step 6: Ask for property example
     const { example } = await prompter.prompt({
       type: 'input',
       name: 'example',
@@ -90,7 +105,7 @@ module.exports = {
       format: (input) => input.trim(),
     });
 
-    // Step 5: Ask if the property should be added to DTO
+    // Step 7: Ask if the property should be added to DTO
     const { isAddToDto } = await prompter.prompt({
       type: 'confirm',
       name: 'isAddToDto',
@@ -106,6 +121,7 @@ module.exports = {
       type: customType || type,
       isAddToDto,
       example,
+      version,
     };
   },
 };
