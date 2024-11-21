@@ -189,7 +189,7 @@ export class AuthService {
         id: RoleEnum.user,
       },
       status: {
-        id: StatusEnum.active,
+        id: StatusEnum.inactive,
       },
     });
 
