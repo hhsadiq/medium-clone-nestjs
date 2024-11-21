@@ -1,8 +1,7 @@
 import request from 'supertest';
 
-import { RoleEnum } from '@src/roles/roles.enum';
-import { StatusEnum } from '@src/statuses/statuses.enum';
-
+import { RoleEnum } from '../../src/roles/roles.enum';
+import { StatusEnum } from '../../src/statuses/statuses.enum';
 import { ADMIN_EMAIL, ADMIN_PASSWORD, APP_URL } from '../utils/constants';
 
 describe('Users Module', () => {
@@ -33,6 +32,7 @@ describe('Users Module', () => {
           password: newUserPassword,
           firstName: `First${Date.now()}`,
           lastName: 'E2E',
+          username: `userFirst${Date.now()}`,
         });
 
       await request(app)
@@ -99,12 +99,13 @@ describe('Users Module', () => {
             email: newUserByAdminEmail,
             password: newUserByAdminPassword,
             firstName: `UserByAdmin${Date.now()}`,
+            username: `User${Date.now()}`,
             lastName: 'E2E',
             role: {
               id: RoleEnum.user,
             },
             status: {
-              id: StatusEnum.active,
+              id: StatusEnum.inactive,
             },
           })
           .expect(201);
