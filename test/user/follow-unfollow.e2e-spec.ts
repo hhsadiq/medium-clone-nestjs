@@ -1,3 +1,5 @@
+import { APP_URL } from '@test/utils/constants';
+import { fakeGenerator } from '@test/utils/faker';
 import request from 'supertest';
 
 import {
@@ -8,7 +10,6 @@ import {
   USER_FOLLOW_SUCCESS,
   USER_UNFOLLOW_SUCCESS,
 } from '../../src/common/response-messages';
-import { APP_URL } from '../utils/constants';
 
 describe('Follow/Unfollow Module', () => {
   let authToken;
@@ -17,11 +18,11 @@ describe('Follow/Unfollow Module', () => {
 
   beforeAll(async () => {
     // Create and authenticate the primary user
-    const userEmail = `primaryUser.${Date.now()}@example.com`;
-    const userPassword = `secret`;
-    const firstName = `Primary`;
-    const lastName = `User`;
-    const username = `Primary${Date.now()}`;
+    const userEmail = fakeGenerator.generateEmail();
+    const userPassword = fakeGenerator.generatePassword();
+    const firstName = fakeGenerator.generateFirstName();
+    const lastName = fakeGenerator.generateLastName();
+    const username = `Primary${firstName}`;
 
     await request(app)
       .post('/api/v1/auth/email/register')
@@ -35,11 +36,11 @@ describe('Follow/Unfollow Module', () => {
       .expect(204);
 
     // Create and authenticate another user to follow
-    const anotherUserEmail = `anotherUser.${Date.now()}@example.com`;
-    const anotherUserPassword = `secret`;
-    const anotherFirstName = `Another`;
-    const anotherLastName = `User`;
-    const anotherUsername = `Another${Date.now()}`;
+    const anotherUserEmail = fakeGenerator.generateEmail();
+    const anotherUserPassword = fakeGenerator.generatePassword();
+    const anotherFirstName = fakeGenerator.generateFirstName();
+    const anotherLastName = fakeGenerator.generateLastName();
+    const anotherUsername = `Another${anotherFirstName}`;
 
     await request(app)
       .post('/api/v1/auth/email/register')

@@ -1,6 +1,5 @@
+import { ADMIN_EMAIL, ADMIN_PASSWORD, APP_URL } from '@test/utils/constants';
 import request from 'supertest';
-
-import { ADMIN_EMAIL, ADMIN_PASSWORD, APP_URL } from '../utils/constants';
 
 describe('Auth', () => {
   const app = APP_URL;

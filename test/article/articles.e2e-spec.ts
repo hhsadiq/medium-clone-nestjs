@@ -1,15 +1,14 @@
-import { faker } from '@faker-js/faker';
+import { APP_URL } from '@test/utils/constants';
+import { fakeGenerator } from '@test/utils/faker';
 import request from 'supertest';
-
-import { APP_URL } from '../utils/constants';
 
 describe('ArticlesController (e2e)', () => {
   const app = APP_URL;
-  const newUserFirstName = `Tester${Date.now()}`;
-  const newUserLastName = `E2E`;
-  const newUserEmail = `User.${Date.now()}@example.com`;
-  const newUserPassword = `secret`;
-  const userName = `user${newUserFirstName}`;
+  const newUserFirstName = fakeGenerator.generateFirstName();
+  const newUserLastName = fakeGenerator.generateLastName();
+  const newUserEmail = fakeGenerator.generateEmail();
+  const newUserPassword = fakeGenerator.generatePassword();
+  const username = `user${newUserFirstName}`;
   let articleIdOfCreatedArticle;
   let articleSlugOfCreatedArticle;
   let commentIdOnCreatedArticle;
@@ -19,7 +18,7 @@ describe('ArticlesController (e2e)', () => {
     await request(app).post('/api/v1/auth/email/register').send({
       email: newUserEmail,
       password: newUserPassword,
-      username: userName,
+      username,
       firstName: newUserFirstName,
       lastName: newUserLastName,
     });
@@ -35,11 +34,11 @@ describe('ArticlesController (e2e)', () => {
 
   it('should create a new article with random data', async () => {
     const newArticle = {
-      body: faker.lorem.paragraph(), // Required
-      description: faker.lorem.sentence(), // Required
+      body: fakeGenerator.generateParagraph(), // Required
+      description: fakeGenerator.generateSentence(), // Required
       autoGenerateTitle: false, // Derived logic; include if needed
-      title: faker.lorem.words(3), // Required
-      tagList: [faker.word.noun(), faker.word.adjective()], // Optional
+      title: fakeGenerator.generateWords(3), // Required
+      tagList: fakeGenerator.generateTagList(), // Optional
     };
 
     const response = await request(app)
