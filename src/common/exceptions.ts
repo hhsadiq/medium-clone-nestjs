@@ -5,6 +5,7 @@ import {
   HttpStatus,
   InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 
@@ -38,7 +39,7 @@ export const UNPROCESSABLE_ENTITY = (message: string, attribute: string) => {
 };
 
 export const UNAUTHORIZED = (message: string, attribute: string) => {
-  return new UnprocessableEntityException({
+  return new UnauthorizedException({
     statusCode: HttpStatus.UNAUTHORIZED,
     errors: {
       [attribute]: message,

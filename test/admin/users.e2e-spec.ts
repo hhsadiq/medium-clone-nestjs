@@ -1,9 +1,9 @@
+import { ADMIN_EMAIL, ADMIN_PASSWORD, APP_URL } from '@test/utils/constants';
+import { fakeGenerator } from '@test/utils/faker';
 import request from 'supertest';
 
 import { RoleEnum } from '@src/roles/roles.enum';
 import { StatusEnum } from '@src/statuses/statuses.enum';
-
-import { ADMIN_EMAIL, ADMIN_PASSWORD, APP_URL } from '../utils/constants';
 
 describe('Users Module', () => {
   const app = APP_URL;
@@ -20,20 +20,22 @@ describe('Users Module', () => {
 
   describe('Update', () => {
     let newUser;
-    const newUserEmail = `user-first.${Date.now()}@example.com`;
-    const newUserChangedEmail = `user-first-changed.${Date.now()}@example.com`;
-    const newUserPassword = `secret`;
-    const newUserChangedPassword = `new-secret`;
+    const newUserFirstName = fakeGenerator.generateFirstName();
+    const newUserLastName = fakeGenerator.generateLastName();
+    const newUserEmail = fakeGenerator.generateEmail();
+    const newUserPassword = fakeGenerator.generatePassword();
+    const username = `user${newUserFirstName}`;
+    const newUserChangedEmail = fakeGenerator.generateEmail();
+    const newUserChangedPassword = fakeGenerator.generatePassword();
 
     beforeAll(async () => {
-      await request(app)
-        .post('/api/v1/auth/email/register')
-        .send({
-          email: newUserEmail,
-          password: newUserPassword,
-          firstName: `First${Date.now()}`,
-          lastName: 'E2E',
-        });
+      await request(app).post('/api/v1/auth/email/register').send({
+        email: newUserEmail,
+        password: newUserPassword,
+        firstName: newUserFirstName,
+        lastName: newUserLastName,
+        username,
+      });
 
       await request(app)
         .post('/api/v1/auth/email/login')
@@ -75,8 +77,8 @@ describe('Users Module', () => {
   });
 
   describe('Create', () => {
-    const newUserByAdminEmail = `user-created-by-admin.${Date.now()}@example.com`;
-    const newUserByAdminPassword = `secret`;
+    const newUserByAdminEmail = fakeGenerator.generateEmail();
+    const newUserByAdminPassword = fakeGenerator.generatePassword();
 
     describe('User with "Admin" role', () => {
       it('should fail to create new user with invalid email: /api/v1/users (POST)', () => {
@@ -98,13 +100,14 @@ describe('Users Module', () => {
           .send({
             email: newUserByAdminEmail,
             password: newUserByAdminPassword,
-            firstName: `UserByAdmin${Date.now()}`,
-            lastName: 'E2E',
+            firstName: `UserByAdmin${fakeGenerator.generateFirstName()}`,
+            username: `User${Date.now()}`,
+            lastName: fakeGenerator.generateLastName(),
             role: {
               id: RoleEnum.user,
             },
             status: {
-              id: StatusEnum.active,
+              id: StatusEnum.inactive,
             },
           })
           .expect(201);
