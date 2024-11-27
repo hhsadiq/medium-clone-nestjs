@@ -7,6 +7,8 @@ import { HeaderResolver } from 'nestjs-i18n';
 import { I18nModule } from 'nestjs-i18n/dist/i18n.module';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
+import { AuthBiometricModule } from '@src/auth_biometric/auth-biometric.module';
+
 import { ArticlesModule } from './articles/articles.module';
 import { AuthModule } from './auth/auth.module';
 import authConfig from './auth/config/auth.config';
@@ -97,6 +99,7 @@ const infrastructureDatabaseModule = TypeOrmModule.forRootAsync({
     AuthGoogleModule,
     AuthTwitterModule,
     AuthAppleModule,
+    AuthBiometricModule,
     SessionModule,
     MailModule,
     MailerModule,

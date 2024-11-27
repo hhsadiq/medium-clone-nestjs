@@ -12,3 +12,20 @@ export const ARTICLE_NOT_FAVORITE_ERROR =
   'Article already removed from favorite articles';
 export const ARTICLE_ALREADY_FAVORITED_ERROR =
   'Article already added to favorite articles';
+export const ENABLE_BIOMETRIC_ERROR = (
+  userId: number | string,
+  deviceId: string,
+) =>
+  `Error occurred while enabling biometric for userId: ${userId} & deviceId: ${deviceId}`;
+export const DISABLE_BIOMETRIC_ERROR = (
+  userId: number | string,
+  deviceId: string,
+) =>
+  `Error occurred while disabling biometric for userId: ${userId} & deviceId: ${deviceId}`;
+export const BIOMETRIC_CHALLENGE_ERROR = (
+  userId: number | string,
+  deviceId: string,
+) =>
+  `Error occurred while getting biometric challenge for userId: ${userId} & deviceId: ${deviceId}`;
+export const BIOMETRIC_VERIFICATION_FAILED = `Biometric verification failed.`;
+export const ERROR_BIOMETRIC_VERIFICATION = `Error during Biometric verification.`;
