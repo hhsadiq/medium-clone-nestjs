@@ -5,8 +5,5 @@ before: "} from '@nestjs/swagger'"
 skip_if: \ApiProperty,
 ---
 <% if (isAddToDto) { -%>
-@ApiProperty({
-  type: <%= h.getPropertyType(type) %>,
-  example: "<%= example %>",
-}),
+ApiProperty
 <% } -%>
