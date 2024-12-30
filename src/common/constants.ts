@@ -9,4 +9,6 @@ export const TABLES = {
   user: 'user',
   articleFollow: 'user_favorite_article',
   userFollow: 'follow',
+  userDevice: 'user_device',
+  biometricChallenge: 'biometric_challenge',
 };

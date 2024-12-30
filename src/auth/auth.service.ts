@@ -97,6 +97,48 @@ export class AuthService {
     };
   }
 
+  async validateLoginWithBiometric(email: string): Promise<LoginResponseDto> {
+    const user = await this.findAndValidate('email', email);
+
+    if (user.provider !== AuthProvidersEnum.email) {
+      throw UNPROCESSABLE_ENTITY(
+        `needLoginViaProvider:${user.provider}`,
+        'email',
+      );
+    }
+
+    if (!user.password) {
+      throw UNPROCESSABLE_ENTITY(
+        ERROR_MESSAGES.NOT_PRESENT('password'),
+        'password',
+      );
+    }
+
+    const hash = crypto
+      .createHash('sha256')
+      .update(randomStringGenerator())
+      .digest('hex');
+
+    const session = await this.sessionService.create({
+      user,
+      hash,
+    });
+
+    const { token, refreshToken, tokenExpires } = await this.getTokensData({
+      id: user.id,
+      role: user.role,
+      sessionId: session.id,
+      hash,
+    });
+
+    return {
+      refresh_token: refreshToken,
+      token,
+      token_expires: tokenExpires,
+      user,
+    };
+  }
+
   async validateSocialLogin(
     authProvider: string,
     socialData: SocialInterface,
