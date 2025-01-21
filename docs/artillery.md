@@ -5,8 +5,8 @@
 - [Artillery Load Testing](#artillery-load-testing)
   - [Installation](#installation)
   - [Setup](#setup)
-  - [Overview of the Use-case](#overview-of-the-use-case)
-  - [How to Run the File](#how-to-run-the-file)
+  - [Module Specific Files](#module-specific-files)
+  - [How to Run the File](#how-to-run-the-files)
   - [How to Increase the Load](#how-to-increase-the-load)
 
 ---
@@ -27,37 +27,94 @@ npx artillery dino
 
 ### Setup
 
-- **motac-load-test.yml**: I created a file named `motac-load-test.yml` where the complete flow is added, covering user signup, login, and destination queries APIs.
-- **helpers.js**: I created a helper file to generate unique phone numbers and email addresses for user signup on each request.
+Each module has its own load testing setup in the `load-test` directory. Inside each module folder, you will find:
 
-### Overview of the Use-case
+- A `.yml` file containing the load test scenarios.
+- An `.md` file containing the test report and performance metrics.
 
-This load testing setup simulates user interactions with the API, covering the APIs of the home-screen and discover Malaysia except the trip_listing API. The focus is on verifying API performance, request handling, and the ability to handle user sessions efficiently.
+Example structure:
 
-### How to Run the File
+```plaintext
+└── 📁load-test
+    └── 📁articles
+        └── articles-load-test.yml
+        └── articles-load-test-report.md
+    └── 📁users
+        └── users-load-test.yml
+        └── users-load-test-report.md
+```
 
-- Move to the directory where `motac-load-test.yml` and `helpers.js` exist:
+---
 
-  ```bash
-  cd motac-mobile-apis
-  ```
+### Module Specific Files
 
-- Then run the load test using the following command:
+#### Articles Module
 
-  ```bash
-  artillery run motac-load-test.yml
-  ```
+- **Load Test File**: `load-test/articles/articles-load-test.yml`
+- **Report**: `load-test/articles/articles-load-test-report.md`
+
+#### Users Module
+
+- **Load Test File**: `load-test/users/users-load-test.yml`
+- **Report**: `load-test/users/users-load-test-report.md`
+
+---
+
+### How to Run the Files
+
+Navigate to the directory of the module you want to test and run the corresponding `.yml` file.
+
+For example:
+
+1. Navigate to the **Users Module** folder:
+
+   ```bash
+   cd load-test/users
+   ```
+
+   Run the load test:
+
+   ```bash
+   artillery run users-load-test.yml
+   ```
+
+2. Navigate to the **Articles Module** folder:
+   ```bash
+   cd load-test/articles
+   ```
+   Run the load test:
+   ```bash
+   artillery run articles-load-test.yml
+   ```
+
+---
 
 ### How to Increase the Load
 
-To scale the load, you can modify the configuration in the motac-load-test.yml file. The two key attributes that control the load are:
+To scale the load, modify the `phases` section in the respective `.yml` files.
 
-- duration: Specifies how long the load test should run. For example, 30 means 30 seconds.
-- arrivalRate: Defines the rate at which virtual users arrive. For example, 1 means one virtual user arrives every second.
-  By adjusting these values, you can control the intensity and duration of the load.
+Key attributes to adjust:
+
+- **duration**: Specifies how long the load test should run (in seconds).
+- **arrivalCount**: Defines the total number of virtual users during the test.
+
+Example:
+
+```yaml
+phases:
+  - duration: 60
+    arrivalCount: 150
+    name: 'Load Test for Articles Module'
+```
+
+Increasing the `arrivalCount` and/or `duration` will amplify the load on the APIs. Ensure your system can handle the increased load before making large changes.
 
 ---
 
 Previous: [Tests](tests.md)
 
 Next: [Benchmarking](benchmarking.md)
+
+```
+
+```
